@@ -34,8 +34,9 @@ ftp::server::session::Manager::hasSession
 (
     const Socket &clientSocket
 )
+    const
 {
-    return this->_sessions.find(clientSocket.getFd()) != this->_sessions.end();
+    return this->_sessions.contains(clientSocket.getFd());
 }
 
 ftp::server::session::Session &

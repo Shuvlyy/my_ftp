@@ -39,7 +39,7 @@ namespace ftp::server::session
         /**
          * @return  true if client's socket has an active session. Otherwise, false.
          */
-        bool hasSession(const Socket &clientSocket);
+        bool hasSession(const Socket &clientSocket) const;
 
         /**
          * @return  Session associated with the socket

@@ -2,7 +2,7 @@
 
 ftp::Server::Server
 (
-    short port,
+    const short port,
     const std::string &path
 )
     : _isRunning(false),
