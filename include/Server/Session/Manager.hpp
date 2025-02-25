@@ -1,6 +1,7 @@
 #pragma once
 
 #include "User/User.hpp"
+#include "Server/Socket/Socket.hpp"
 
 #include <unordered_map>
 
@@ -9,13 +10,10 @@ namespace ftp::server::session
 
     struct Session
     {
-        User user;
+        User *user;
         bool isAuthenticated;
-
-        explicit Session(const User &user)
-            : user(user), isAuthenticated(false)
-        {}
     };
+
 
     class Manager final
     {
@@ -23,25 +21,30 @@ namespace ftp::server::session
         /**
          * Creates a new session for a user.
          *
-         * @param   clientFd    File descriptor of the client
-         * @param   user
+         * @param   clientSocket    Client's socket
+         * @param   user    Session user
          */
         void createSession(
-            int clientFd,
-            const User &user
+            const Socket &clientSocket,
+            User *user
         );
 
         /**
          * Closes an active session.
          *
-         * @param   clientFd    File descriptor of the client
+         * @param   clientSocket    Client's socket
          */
-        void closeSession(int clientFd);
+        void closeSession(const Socket &clientSocket);
 
         /**
-         * @return  Session associated with the file descriptor
+         * @return  true if client's socket has an active session. Otherwise, false.
          */
-        Session &getSession(int clientFd);
+        bool hasSession(const Socket &clientSocket);
+
+        /**
+         * @return  Session associated with the socket
+         */
+        Session &getSession(const Socket &clientSocket);
 
     private:
         std::unordered_map<int, Session> _sessions;
