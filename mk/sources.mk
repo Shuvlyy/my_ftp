@@ -15,4 +15,14 @@ SRC += src/Utilities/Utilities.cpp
 
 SRC += src/Parser/Parser.cpp
 
+SRC += src/User/User.cpp \
+	src/User/Manager.cpp
+
 SRC += src/Server/Server.cpp
+
+SRC += src/Server/Session/Manager.cpp
+
+SRC += src/Server/Socket/Socket.cpp
+
+SRC += src/Server/Command/Manager.cpp \
+	src/Server/Command/Commands/Help.cpp
