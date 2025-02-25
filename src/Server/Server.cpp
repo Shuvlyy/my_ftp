@@ -1,22 +1,17 @@
 #include "Server/Server.hpp"
 
-#include <iostream>
-#include <utility>
-#include <unistd.h>
-
 ftp::Server::Server
 (
     short port,
-    std::string path
+    const std::string &path
 )
-    : _serverFd(0),
-      _address{},
-      _addressLen{},
-      _port(port),
-      _isRunning(false),
-      anonymousUserHomePath(std::move(path))
+    : _isRunning(false),
+      _serverSocket(server::Socket(port)),
+      _commandManager(server::commands::Manager(this)),
+      _sessionManager(server::session::Manager()),
+      _userManager(user::Manager(path))
 {
-    this->initialize();
+    this->_serverSocket.startListening();
 }
 
 ftp::Server::~Server
@@ -31,7 +26,13 @@ ftp::Server::start
 {
     this->_isRunning = true;
 
-    while (this->_isRunning) {
+    this->_pollFds.push_back({
+        .fd = this->_serverSocket.getFd(),
+        .events = POLLIN,
+        .revents = 0
+    });
+
+    /*while (this->_isRunning) {
         sockaddr_in clientAddr{};
         socklen_t clientAddrLen = sizeof(clientAddr);
 
@@ -48,65 +49,40 @@ ftp::Server::start
 
         write(clientFd, "I lost the game :3\n", 19);
         close(clientFd);
-    }
+    }*/
 }
 
 void
 ftp::Server::stop
 ()
 {
+    if (!this->_isRunning) {
+        return;
+    }
+
     this->_isRunning = false;
-    close(this->_serverFd);
+    this->_serverSocket.closeSocket();
 }
 
-void
-ftp::Server::initialize
+ftp::server::commands::Manager &
+ftp::Server::getCommandManager
 ()
 {
-    int ret;
-    int opt = 1;
+    return this->_commandManager;
+}
 
-    this->_address.sin_family = AF_INET;           // Uses IPV4
-    this->_address.sin_addr.s_addr = INADDR_ANY;   // Accepts incoming connections from every IP
-    this->_address.sin_port = htons(this->_port);  // Sets the port
+ftp::server::session::Manager &
+ftp::Server::getSessionManager
+()
+{
+    return this->_sessionManager;
+}
 
-    this->_serverFd = socket(
-        AF_INET,
-        SOCK_STREAM,
-        0
-    );
-
-    if (this->_serverFd < 0) {
-        throw std::exception(); // TODO: Throw proper exception.
-    }
-
-    ret = setsockopt(
-        this->_serverFd,
-        SOL_SOCKET,
-        SO_REUSEADDR | SO_REUSEPORT,
-        &opt,
-        sizeof(opt)
-    );
-
-    if (ret < 0) {
-        throw std::exception(); // TODO: Throw proper exception.
-    }
-
-    ret = bind(
-        this->_serverFd,
-        reinterpret_cast<sockaddr *>(&this->_address),
-        sizeof(this->_address)
-    );
-
-    if (ret < 0) {
-        throw std::exception(); // TODO: Throw proper exception.
-    }
-
-    ret = listen(this->_serverFd, 1);
-
-    if (ret != 0) {
-        throw std::exception();
-    }
+ftp::user::Manager &
+ftp::Server::getUserManager
+()
+{
+    return this->_userManager;
 }
 
 void

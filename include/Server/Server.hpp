@@ -1,7 +1,13 @@
 #pragma once
 
+#include "Command/Manager.hpp"
+#include "Session/Manager.hpp"
+#include "User/Manager.hpp"
+
 #include <string>
-#include <netinet/in.h>
+#include <vector>
+
+#include <sys/poll.h>
 
 namespace ftp
 {
@@ -11,23 +17,29 @@ namespace ftp
     public:
         explicit Server(
             short port,
-            std::string path
+            const std::string &path
         );
         ~Server();
 
         void start();
         void stop();
 
+        [[nodiscard]] server::commands::Manager &getCommandManager();
+        [[nodiscard]] server::session::Manager &getSessionManager();
+        [[nodiscard]] user::Manager &getUserManager();
+
     private:
-        int _serverFd;
-        sockaddr_in _address;
-        socklen_t _addressLen;
-        int _port;
         bool _isRunning;
-        std::string anonymousUserHomePath;
+        server::Socket _serverSocket;
+        server::commands::Manager _commandManager;
+        server::session::Manager _sessionManager;
+        user::Manager _userManager;
+        std::vector<pollfd> _pollFds;
 
         void initialize();
         void terminate();
+        void handleNewConnection();
+        void handleClientRequest(size_t index);
     };
 
 }
