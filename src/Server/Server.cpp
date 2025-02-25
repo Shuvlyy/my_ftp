@@ -8,8 +8,8 @@ ftp::Server::Server
     : _isRunning(false),
       _serverSocket(server::Socket(port)),
       _commandManager(server::commands::Manager(this)),
-      _sessionManager(server::session::Manager()),
-      _userManager(user::Manager(path))
+      _userManager(user::Manager(path)),
+      _sessionManager(server::session::Manager())
 {
     this->_serverSocket.startListening();
 }

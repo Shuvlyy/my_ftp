@@ -32,8 +32,8 @@ namespace ftp
         bool _isRunning;
         server::Socket _serverSocket;
         server::commands::Manager _commandManager;
-        server::session::Manager _sessionManager;
         user::Manager _userManager;
+        server::session::Manager _sessionManager;
         std::vector<pollfd> _pollFds;
 
         void initialize();

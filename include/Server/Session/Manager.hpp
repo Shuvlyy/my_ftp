@@ -46,6 +46,11 @@ namespace ftp::server::session
          */
         Session &getSession(const Socket &clientSocket);
 
+        /**
+         * @return  User associated with the socket (through the session)
+         */
+        User *getUser(const Socket &clientSocket);
+
     private:
         std::unordered_map<int, Session> _sessions;
     };

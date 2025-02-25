@@ -24,7 +24,10 @@ ftp::user::Manager::registerUser
     std::unique_ptr<User> user
 )
 {
-    this->_users.insert(std::make_pair(user->getUsername(), std::move(user)));
+    this->_users.insert(std::make_pair(
+        user->getUsername(),
+        std::move(user)
+    ));
 }
 
 void

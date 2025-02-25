@@ -47,3 +47,15 @@ ftp::server::session::Manager::getSession
 {
     return this->_sessions.find(clientSocket.getFd())->second;
 }
+
+ftp::User *
+ftp::server::session::Manager::getUser
+(
+    const Socket &clientSocket
+)
+{
+    if (!this->hasSession(clientSocket)) {
+        return nullptr;
+    }
+    return this->getSession(clientSocket).user;
+}

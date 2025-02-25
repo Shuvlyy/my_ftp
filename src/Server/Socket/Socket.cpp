@@ -7,7 +7,7 @@
 
 ftp::server::Socket::Socket
 (
-    short port
+    const short port
 )
 {
     this->_fd = socket(AF_INET, SOCK_STREAM, PROTOCOL_ANY);
@@ -21,7 +21,11 @@ ftp::server::Socket::Socket
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     serverAddr.sin_port = htons(port);
 
-    if (bind(this->_fd, (sockaddr *) &serverAddr, sizeof(serverAddr)) < 0) {
+    if (bind(
+        this->_fd,
+        reinterpret_cast<sockaddr *>(&serverAddr),
+        sizeof(serverAddr)
+    ) < 0) {
         close(this->_fd);
         // TODO: Throw exception
     }
@@ -32,7 +36,7 @@ ftp::server::Socket::Socket
 
 ftp::server::Socket::Socket
 (
-    int fd
+    const int fd
 )
     : _fd(fd)
 {
@@ -67,10 +71,11 @@ ftp::server::Socket::receive
     const
 {
     std::string result;
-    char buffer[BUFFER_SIZE];
     ssize_t bytesRead = 1;
 
     while (bytesRead > 0) {
+        char buffer[BUFFER_SIZE];
+
         bytesRead = read(this->_fd, buffer, BUFFER_SIZE);
         result.append(buffer, bytesRead);
     }
