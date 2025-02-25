@@ -9,15 +9,41 @@ ftp::server::Socket::Socket
 (
     short port
 )
-    : _fd()
 {
-    this->initialize(port);
+    this->_fd = socket(AF_INET, SOCK_STREAM, PROTOCOL_ANY);
+
+    if (this->_fd < 0) {
+        // TODO: Throw exception
+    }
+
+    sockaddr_in serverAddr {};
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+    serverAddr.sin_port = htons(port);
+
+    if (bind(this->_fd, (sockaddr *) &serverAddr, sizeof(serverAddr)) < 0) {
+        close(this->_fd);
+        // TODO: Throw exception
+    }
+
+    /* Make socket non-blocking. */
+    fcntl(this->_fd, F_SETFL, O_NONBLOCK);
+}
+
+ftp::server::Socket::Socket
+(
+    int fd
+)
+    : _fd(fd)
+{
+    /* Make socket non-blocking. */
+    fcntl(_fd, F_SETFL, O_NONBLOCK);
 }
 
 ftp::server::Socket::~Socket
 ()
 {
-    this->_close();
+    this->closeSocket();
 }
 
 void
@@ -56,6 +82,19 @@ ftp::server::Socket::receive
     return result;
 }
 
+void
+ftp::server::Socket::closeSocket
+()
+{
+    /* If socket has already been closed, don't continue */
+    if (this->_fd == -1) {
+        return;
+    }
+
+    close(this->_fd);
+    this->_fd = -1;
+}
+
 int
 ftp::server::Socket::getFd
 ()
@@ -65,39 +104,12 @@ ftp::server::Socket::getFd
 }
 
 void
-ftp::server::Socket::initialize
-(
-    short port
-)
-{
-    // this->_fd = socket(AF_INET, SOCK_STREAM, PROTOCOL_ANY);
-    //
-    // if (this->_fd < 0) {
-    //     // TODO: Throw exception
-    // }
-    //
-    // sockaddr_in serverAddr {};
-    // serverAddr.sin_family = AF_INET;
-    // serverAddr.sin_addr.s_addr = INADDR_ANY;
-    // serverAddr.sin_port = htons(port);
-    //
-    // if (bind(this->_fd, (sockaddr *) &serverAddr, sizeof(serverAddr)) < 0) {
-    //     close(this->_fd);
-    //     // TODO: Throw exception
-    // }
-    //
-    // if (listen(this->_fd, 5) < 0) { // FIXME: 5 is magic number (represents the max amount of simultaneous connections)
-    //     close(this->_fd);
-    //     // TODO: Throw exception
-    // }
-    //
-    // /* Make socket non-blocking. */
-    // fcntl(this->_fd, F_SETFL, O_NONBLOCK);
-}
-
-void
-ftp::server::Socket::_close
+ftp::server::Socket::startListening
 ()
+    const
 {
-    close(this->_fd);
+    if (listen(this->_fd, 5) < 0) { // FIXME: 5 is magic number (represents the max amount of simultaneous connections)
+        close(this->_fd);
+        // TODO: Throw exception
+    }
 }
