@@ -17,7 +17,8 @@ ftp::server::commands::Help::execute
 (
     Server *server,
     const std::vector<std::string> &commandArguments,
-    const Socket &
+    Socket &,
+    Session &
 )
     const
 {

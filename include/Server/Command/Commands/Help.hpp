@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Server/Command/ICommand.hpp"
+#include "Server/Command/ACommand.hpp"
 
 namespace ftp::server::commands
 {
 
     class Help final
-        : public ICommand
+        : public ACommand
     {
     public:
         [[nodiscard]] bool isUsageValid(
@@ -14,10 +14,18 @@ namespace ftp::server::commands
         ) const override;
 
         void execute(
-            Server *shell,
+            Server *server,
             const std::vector<std::string> &commandArguments,
-            const Socket &clientSocket
+            Socket &clientSocket,
+            Session &session
         ) const override;
+
+        [[nodiscard]] bool
+        doesNeedLogin()
+            const override
+        {
+            return false;
+        }
 
         [[nodiscard]] std::string getCommandName()
             const override
