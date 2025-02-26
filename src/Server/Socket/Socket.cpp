@@ -28,7 +28,7 @@ ftp::server::Socket::Socket
         reinterpret_cast<sockaddr *>(&serverAddr),
         sizeof(serverAddr)
     ) < 0) {
-        close(this->_fd);
+        this->closeSocket();
         throw exception::StandardFunctionFail("bind");
     }
 }
@@ -47,6 +47,10 @@ ftp::server::Socket::send
 )
     const
 {
+    if (this->_fd == -1) {
+        return;
+    }
+
     const std::string dataToSend(data + "\r\n");
 
     const ssize_t bytesWritten = write(
@@ -65,6 +69,10 @@ ftp::server::Socket::receive
 ()
     const
 {
+    if (this->_fd == -1) {
+        return "";
+    }
+
     std::string result;
     ssize_t bytesRead;
 
