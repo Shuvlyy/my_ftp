@@ -28,12 +28,12 @@ namespace ftp::server::commands
         void executeCommand(
             const std::string &commandName,
             std::vector<std::string> &commandArguments,
-            const Socket &clientSocket
+            Socket &clientSocket
         ) const;
 
         void executeCommand(
             const std::string &commandName,
-            const Socket &clientSocket
+            Socket &clientSocket
         ) const;
 
     private:

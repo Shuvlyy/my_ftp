@@ -6,6 +6,7 @@
 #include "Exception/Exceptions/StandardFunctionFail.hpp"
 #include "Exception/Exceptions/UnknownCommand.hpp"
 #include "Exception/Exceptions/InvalidCommandUsage.hpp"
+#include "Exception/Exceptions/UserNotLoggedIn.hpp"
 
 #include <fcntl.h>
 #include <netinet/in.h>
@@ -18,8 +19,7 @@ ftp::Server::Server
     : _isRunning(false),
       _serverSocket(server::Socket(port)),
       _commandManager(server::commands::Manager(this)),
-      _userManager(user::Manager(path)),
-      _sessionManager(server::session::Manager())
+      _sessionManager(server::session::Manager(path))
 {
     this->_serverSocket.startListening();
 }
@@ -54,14 +54,13 @@ ftp::Server::start
             return;
         }
 
-        for (size_t k = 0; k < this->_pollFds.size(); ++k) {
-            pollfd &fd = this->_pollFds.at(k);
+        for (auto &fd : this->_pollFds) {
             server::Socket clientSocket(fd.fd);
 
-            if (fd.revents & POLLHUP) {
+            /*if (fd.revents & POLLHUP) {
                 this->disconnectClient(clientSocket, k);
                 continue;
-            }
+            }*/
 
             if (!(fd.revents & POLLIN)) {
                 continue;
@@ -70,7 +69,7 @@ ftp::Server::start
             if (fd.fd == this->_serverSocket.getFd()) {
                 this->handleNewConnection();
             } else {
-                this->handleClientRequest(clientSocket, k);
+                this->handleClientRequest(clientSocket);
             }
         }
     }
@@ -100,13 +99,6 @@ ftp::Server::getSessionManager
 ()
 {
     return this->_sessionManager;
-}
-
-ftp::user::Manager &
-ftp::Server::getUserManager
-()
-{
-    return this->_userManager;
 }
 
 void
@@ -140,10 +132,7 @@ ftp::Server::handleNewConnection
         .revents = 0
     });
 
-    this->_sessionManager.createSession(
-        clientSocket,
-        this->getUserManager().getUser(USER_ANONYMOUS_NAME) // FIXME: Nearly a magic value.
-    );
+    this->_sessionManager.createSession(clientSocket);
     clientSocket.send(RES_SERVICE_READY);
 }
 
@@ -187,8 +176,7 @@ getCommandArguments
 void
 ftp::Server::handleClientRequest
 (
-    server::Socket &clientSocket,
-    size_t index
+    server::Socket &clientSocket
 )
 {
 
@@ -210,18 +198,21 @@ ftp::Server::handleClientRequest
 
             clientSocket.send(RES_COMMAND_OK);
         }
-        catch (exception::UnknownCommand &exception) {
+        catch (exception::UnknownCommand &) {
             clientSocket.send(RES_SYNTAX_ERROR);
         }
-        catch (exception::InvalidCommandUsage &exception) {
+        catch (exception::UserNotLoggedIn &) {
+            clientSocket.send(RES_NOT_LOGGED_IN);
+        }
+        catch (exception::InvalidCommandUsage &) {
             clientSocket.send(RES_SYNTAX_ERROR_PARAMS);
         }
         catch (exception::IException &exception) {
-            std::cout << exception;
+            std::cerr << exception;
         }
     }
     catch (exception::ClientDisconnected &) {
-        this->disconnectClient(clientSocket, index);
+        this->disconnectClient(clientSocket);
     }
     catch (exception::IException &exception) {
         std::cout << exception;
@@ -231,11 +222,18 @@ ftp::Server::handleClientRequest
 void
 ftp::Server::disconnectClient
 (
-    server::Socket &clientSocket,
-    size_t index
+    server::Socket &clientSocket
 )
 {
-    clientSocket.closeSocket();
-    this->_pollFds.erase(this->_pollFds.begin() + static_cast<long>(index));
     this->_sessionManager.closeSession(clientSocket);
+    clientSocket.closeSocket();
+
+    for (size_t k = 0; k < this->_pollFds.size(); k++) {
+        pollfd &fd = this->_pollFds.at(k);
+
+        if (fd.fd == clientSocket.getFd()) {
+            this->_pollFds.erase(this->_pollFds.begin() + static_cast<long>(k));
+            break;
+        }
+    }
 }
