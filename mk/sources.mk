@@ -26,4 +26,8 @@ SRC += src/Server/Session/Manager.cpp \
 SRC += src/Server/Socket/Socket.cpp
 
 SRC += src/Server/Command/Manager.cpp \
-	src/Server/Command/Commands/Help.cpp
+	src/Server/Command/Commands/Help.cpp \
+	src/Server/Command/Commands/User.cpp \
+	src/Server/Command/Commands/Pass.cpp \
+	src/Server/Command/Commands/Noop.cpp \
+	src/Server/Command/Commands/Quit.cpp
