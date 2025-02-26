@@ -8,6 +8,11 @@
 namespace ftp
 {
     class Server;
+
+    namespace server
+    {
+        class Session;
+    }
 }
 
 namespace ftp::server::commands
@@ -26,8 +31,11 @@ namespace ftp::server::commands
         virtual void execute(
             Server *server,
             const std::vector<std::string> &commandArguments,
-            const Socket &clientSocket
+            Socket &clientSocket,
+            Session &session
         ) const = 0;
+
+        [[nodiscard]] virtual bool doesNeedLogin() const = 0;
 
         [[nodiscard]] virtual std::string getCommandName() const = 0;
         [[nodiscard]] virtual std::string getCommandDescription() const = 0;
