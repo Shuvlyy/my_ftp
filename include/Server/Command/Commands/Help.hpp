@@ -47,7 +47,7 @@ namespace ftp::server::commands
 
     private:
         static void displayCommandHelp(
-            Server *shell,
+            Server *server,
             const std::string &commandName
         );
     };

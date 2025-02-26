@@ -44,12 +44,6 @@ namespace ftp::server::commands
         {
             return "user [username]";
         }
-
-    private:
-        static void displayCommandHelp(
-            Server *shell,
-            const std::string &commandName
-        );
     };
 
 }

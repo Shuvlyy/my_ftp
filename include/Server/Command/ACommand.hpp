@@ -14,7 +14,7 @@ namespace ftp::server::commands
             const override
         {
             return true;
-        };
+        }
     };
 
 }

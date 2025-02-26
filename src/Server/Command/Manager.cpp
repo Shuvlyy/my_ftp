@@ -91,7 +91,7 @@ ftp::server::commands::Manager::executeCommand
         );
     }
     catch (exception::IException &exception) {
-        std::cout << exception;
+        std::cerr << exception;
     }
 }
 

@@ -20,9 +20,7 @@ namespace ftp::server::session
          *
          * @param   clientSocket    Client's socket
          */
-        void createSession(
-            const Socket &clientSocket
-        );
+        void createSession(const Socket &clientSocket);
 
         /**
          * Closes an active session.
