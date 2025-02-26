@@ -5,6 +5,8 @@
 #include "Exception/Exceptions/UnknownCommand.hpp"
 #include "Exception/Exceptions/InvalidCommandUsage.hpp"
 
+#include "Utilities/Utilities.hpp"
+
 ftp::server::commands::Manager::Manager
 (
     Server *parent
@@ -49,7 +51,7 @@ ftp::server::commands::Manager::executeCommand
 )
     const
 {
-    const auto name = std::string(commandName);
+    std::string name = Utilities::stringToLower(commandName);
 
     const ICommand *command = this->getCommand(name);
 

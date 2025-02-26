@@ -1,5 +1,7 @@
 #include "Server/Socket/Socket.hpp"
 
+#include "Exception/Exceptions/ClientDisconnected.hpp"
+
 #include <unistd.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
@@ -14,6 +16,7 @@ ftp::server::Socket::Socket
 
     if (this->_fd < 0) {
         // TODO: Throw exception
+        return;
     }
 
     sockaddr_in serverAddr {};
@@ -28,10 +31,8 @@ ftp::server::Socket::Socket
     ) < 0) {
         close(this->_fd);
         // TODO: Throw exception
+        return;
     }
-
-    /* Make socket non-blocking. */
-    fcntl(this->_fd, F_SETFL, O_NONBLOCK);
 }
 
 ftp::server::Socket::Socket
@@ -39,16 +40,7 @@ ftp::server::Socket::Socket
     const int fd
 )
     : _fd(fd)
-{
-    /* Make socket non-blocking. */
-    fcntl(_fd, F_SETFL, O_NONBLOCK);
-}
-
-ftp::server::Socket::~Socket
-()
-{
-    this->closeSocket();
-}
+{}
 
 void
 ftp::server::Socket::send
@@ -57,8 +49,13 @@ ftp::server::Socket::send
 )
     const
 {
-    const ssize_t bytesWritten =
-        write(this->_fd, data.c_str(), data.length());
+    const std::string dataToSend(data + "\r\n");
+
+    const ssize_t bytesWritten = write(
+        this->_fd,
+        dataToSend.c_str(),
+        dataToSend.length()
+    );
 
     if (bytesWritten == -1) {
         // TODO: Throw exception
@@ -71,18 +68,33 @@ ftp::server::Socket::receive
     const
 {
     std::string result;
-    ssize_t bytesRead = 1;
+    ssize_t bytesRead;
 
-    while (bytesRead > 0) {
+    while (true) {
         char buffer[BUFFER_SIZE];
 
         bytesRead = read(this->_fd, buffer, BUFFER_SIZE);
+
+        if (bytesRead < 0) {
+            // TODO: Throw proper exception, for READ FAIL
+            return result;
+        }
+
+        if (bytesRead == 0) {
+            throw exception::ClientDisconnected(this->getFd());
+        }
+
+        buffer[bytesRead] = '\0';
         result.append(buffer, bytesRead);
+
+        if (result.size() >= 2 && result.ends_with("\r\n")) {
+            break;
+        }
     }
 
-    if (bytesRead == -1) {
-        // TODO: Throw exception
-    }
+    /* Removing <CRLF> (\r\n, last two characters) */
+    result.pop_back();
+    result.pop_back();
 
     return result;
 }

@@ -28,7 +28,7 @@ namespace ftp::server
         /**
          * Destructor, automatically closes the file descriptor.
          */
-        ~Socket();
+        ~Socket() = default;
 
         /**
          * Writes the given string into the file descriptor.

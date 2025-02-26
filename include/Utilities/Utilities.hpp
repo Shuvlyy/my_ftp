@@ -9,6 +9,7 @@ namespace ftp
     {
     public:
         static int stringToInt(const std::string& str);
+        static std::string stringToLower(const std::string &str);
     };
 
 }

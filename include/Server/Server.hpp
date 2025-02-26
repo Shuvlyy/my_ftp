@@ -1,5 +1,7 @@
 #pragma once
 
+#define POLL_TIMEOUT (-1)
+
 #include "Command/Manager.hpp"
 #include "Session/Manager.hpp"
 #include "User/Manager.hpp"
@@ -36,10 +38,17 @@ namespace ftp
         server::session::Manager _sessionManager;
         std::vector<pollfd> _pollFds;
 
-        void initialize();
         void terminate();
         void handleNewConnection();
-        void handleClientRequest(size_t index);
+        void handleClientRequest(
+            server::Socket &clientSocket,
+            size_t index
+        );
+
+        void disconnectClient(
+            server::Socket &clientSocket,
+            size_t index
+        );
     };
 
 }

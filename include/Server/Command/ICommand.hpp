@@ -24,7 +24,7 @@ namespace ftp::server::commands
         ) const = 0;
 
         virtual void execute(
-            Server *shell,
+            Server *server,
             const std::vector<std::string> &commandArguments,
             const Socket &clientSocket
         ) const = 0;
