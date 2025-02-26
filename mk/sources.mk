@@ -20,7 +20,8 @@ SRC += src/User/User.cpp \
 
 SRC += src/Server/Server.cpp
 
-SRC += src/Server/Session/Manager.cpp
+SRC += src/Server/Session/Manager.cpp \
+	src/Server/Session/Session.cpp
 
 SRC += src/Server/Socket/Socket.cpp
 
