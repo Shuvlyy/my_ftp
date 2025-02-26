@@ -26,9 +26,6 @@ namespace ftp::server
          */
         explicit Socket(int fd);
 
-        /**
-         * Destructor, automatically closes the file descriptor.
-         */
         ~Socket() = default;
 
         /**

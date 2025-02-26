@@ -69,14 +69,14 @@ ftp::server::Socket::receive
 ()
     const
 {
-    if (this->_fd == -1) {
-        return "";
-    }
-
     std::string result;
     ssize_t bytesRead;
 
     while (true) {
+        if (this->_fd == -1) {
+            return "";
+        }
+
         char buffer[BUFFER_SIZE];
 
         bytesRead = read(this->_fd, buffer, BUFFER_SIZE);

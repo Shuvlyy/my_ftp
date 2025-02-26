@@ -225,9 +225,6 @@ ftp::Server::disconnectClient
     server::Socket &clientSocket
 )
 {
-    this->_sessionManager.closeSession(clientSocket);
-    clientSocket.closeSocket();
-
     for (size_t k = 0; k < this->_pollFds.size(); k++) {
         pollfd &fd = this->_pollFds.at(k);
 
@@ -236,4 +233,7 @@ ftp::Server::disconnectClient
             break;
         }
     }
+
+    this->_sessionManager.closeSession(clientSocket);
+    clientSocket.closeSocket();
 }
