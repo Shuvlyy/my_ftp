@@ -8,6 +8,11 @@ ftp::server::Session::Session
       _isLoggedIn(false)
 {}
 
+ftp::server::Session::Session
+()
+    : Session(nullptr)
+{}
+
 bool
 ftp::server::Session::login
 (
@@ -39,4 +44,14 @@ ftp::server::Session::isLoggedIn
     const
 {
     return this->_isLoggedIn;
+}
+
+void
+ftp::server::Session::setUser
+(
+    User *user
+)
+{
+    this->_isLoggedIn = false;
+    this->_user = user;
 }

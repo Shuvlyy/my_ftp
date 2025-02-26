@@ -1,10 +1,16 @@
 #include "Server/Session/Manager.hpp"
 
+ftp::server::session::Manager::Manager
+(
+    const std::string &anonPath
+)
+    : _userManager(user::Manager(anonPath))
+{}
+
 void
 ftp::server::session::Manager::createSession
 (
-    const Socket &clientSocket,
-    User *user
+    const Socket &clientSocket
 )
 {
     if (this->hasSession(clientSocket)) {
@@ -13,7 +19,7 @@ ftp::server::session::Manager::createSession
 
     this->_sessions.emplace(
         clientSocket.getFd(),
-        Session(user)
+        Session()
     );
 }
 
@@ -55,4 +61,29 @@ ftp::server::session::Manager::getUser
         return nullptr;
     }
     return this->getSession(clientSocket).getUser();
+}
+
+void
+ftp::server::session::Manager::setUser
+(
+    const Socket &clientSocket,
+    const std::string &username
+)
+{
+    Session &session = this->getSession(clientSocket);
+    User *user = this->getUserManager().getUser(username);
+
+    if (user == nullptr) {
+        // TODO: Throw exception (usernotfound)
+        return;
+    }
+
+    session.setUser(user);
+}
+
+ftp::user::Manager &
+ftp::server::session::Manager::getUserManager
+()
+{
+    return this->_userManager;
 }

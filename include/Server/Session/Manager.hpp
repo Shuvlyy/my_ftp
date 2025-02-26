@@ -1,6 +1,7 @@
 #pragma once
 
 #include "User/User.hpp"
+#include "User/Manager.hpp"
 #include "Server/Socket/Socket.hpp"
 #include "Server/Session/Session.hpp"
 
@@ -12,15 +13,15 @@ namespace ftp::server::session
     class Manager final
     {
     public:
+        explicit Manager(const std::string &anonPath);
+
         /**
          * Creates a new session for a user.
          *
          * @param   clientSocket    Client's socket
-         * @param   user    Session user
          */
         void createSession(
-            const Socket &clientSocket,
-            User *user
+            const Socket &clientSocket
         );
 
         /**
@@ -45,7 +46,16 @@ namespace ftp::server::session
          */
         User *getUser(const Socket &clientSocket);
 
+        void setUser(
+            const Socket &clientSocket,
+            const std::string &username
+        );
+
+        [[nodiscard]] user::Manager &getUserManager();
+
     private:
+        user::Manager _userManager;
+
         /*                      v Session associated with the Client FD */
         std::unordered_map<int, Session> _sessions;
         /*                 ^ Client FD                                  */
