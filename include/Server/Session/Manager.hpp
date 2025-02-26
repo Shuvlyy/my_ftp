@@ -2,18 +2,12 @@
 
 #include "User/User.hpp"
 #include "Server/Socket/Socket.hpp"
+#include "Server/Session/Session.hpp"
 
 #include <unordered_map>
 
 namespace ftp::server::session
 {
-
-    struct Session
-    {
-        User *user;
-        bool isAuthenticated;
-    };
-
 
     class Manager final
     {
@@ -52,7 +46,9 @@ namespace ftp::server::session
         User *getUser(const Socket &clientSocket);
 
     private:
+        /*                      v Session associated with the Client FD */
         std::unordered_map<int, Session> _sessions;
+        /*                 ^ Client FD                                  */
     };
 
 }

@@ -13,10 +13,7 @@ ftp::server::session::Manager::createSession
 
     this->_sessions.emplace(
         clientSocket.getFd(),
-        (Session) {
-            .user = user,
-            .isAuthenticated = false
-        }
+        Session(user)
     );
 }
 
@@ -39,7 +36,7 @@ ftp::server::session::Manager::hasSession
     return this->_sessions.contains(clientSocket.getFd());
 }
 
-ftp::server::session::Session &
+ftp::server::Session &
 ftp::server::session::Manager::getSession
 (
     const Socket &clientSocket
@@ -57,5 +54,5 @@ ftp::server::session::Manager::getUser
     if (!this->hasSession(clientSocket)) {
         return nullptr;
     }
-    return this->getSession(clientSocket).user;
+    return this->getSession(clientSocket).getUser();
 }
