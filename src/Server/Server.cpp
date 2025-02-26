@@ -1,7 +1,11 @@
 #include "Server/Server.hpp"
 
+#include "Common/Responses.hpp"
+
 #include "Exception/Exceptions/ClientDisconnected.hpp"
+#include "Exception/Exceptions/StandardFunctionFail.hpp"
 #include "Exception/Exceptions/UnknownCommand.hpp"
+#include "Exception/Exceptions/InvalidCommandUsage.hpp"
 
 #include <fcntl.h>
 #include <netinet/in.h>
@@ -125,8 +129,7 @@ ftp::Server::handleNewConnection
     );
 
     if (clientFd < 0) {
-        // TODO: Throw proper exception
-        return;
+        throw exception::StandardFunctionFail("accept");
     }
 
     const server::Socket clientSocket(clientFd);
@@ -141,7 +144,7 @@ ftp::Server::handleNewConnection
         clientSocket,
         this->getUserManager().getUser(USER_ANONYMOUS_NAME) // FIXME: Nearly a magic value.
     );
-    clientSocket.send("220 FTP Server Ready");
+    clientSocket.send(RES_SERVICE_READY);
 }
 
 static bool
@@ -205,11 +208,13 @@ ftp::Server::handleClientRequest
                 clientSocket
             );
 
-            clientSocket.send("200 Command Okay");
+            clientSocket.send(RES_COMMAND_OK);
         }
         catch (exception::UnknownCommand &exception) {
-            clientSocket.send("500 bad command");
-            // TODO: Send code 500 bad command
+            clientSocket.send(RES_SYNTAX_ERROR);
+        }
+        catch (exception::InvalidCommandUsage &exception) {
+            clientSocket.send(RES_SYNTAX_ERROR_PARAMS);
         }
         catch (exception::IException &exception) {
             std::cout << exception;
@@ -230,8 +235,6 @@ ftp::Server::disconnectClient
     size_t index
 )
 {
-    std::cout << "DISCONNECTING" << std::endl;
-
     clientSocket.closeSocket();
     this->_pollFds.erase(this->_pollFds.begin() + static_cast<long>(index));
     this->_sessionManager.closeSession(clientSocket);

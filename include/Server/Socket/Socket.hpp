@@ -2,6 +2,7 @@
 
 #define PROTOCOL_ANY    0
 #define BUFFER_SIZE     1024
+#define MAX_CLIENTS     16
 
 #include <string>
 

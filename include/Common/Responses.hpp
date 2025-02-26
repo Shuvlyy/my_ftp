@@ -48,4 +48,3 @@
 #define RES_PAGE_TYPE_UNKNOWN "551 Requested action aborted: page type unknown."
 #define RES_EXCEEDED_STORAGE_ALLOCATION "552 Requested file action aborted. Exceeded storage allocation."
 #define RES_INVALID_FILE_NAME "553 Requested action not taken. Invalid file name."
-

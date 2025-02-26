@@ -8,7 +8,7 @@ ftp::server::session::Manager::createSession
 )
 {
     if (this->hasSession(clientSocket)) {
-        return; // TODO: Maybe throw exception
+        return;
     }
 
     this->_sessions.emplace(

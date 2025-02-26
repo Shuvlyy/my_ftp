@@ -1,11 +1,11 @@
 #include "Server/Socket/Socket.hpp"
 
 #include "Exception/Exceptions/ClientDisconnected.hpp"
+#include "Exception/Exceptions/StandardFunctionFail.hpp"
 
 #include <unistd.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
-#include <fcntl.h>
 
 ftp::server::Socket::Socket
 (
@@ -15,8 +15,7 @@ ftp::server::Socket::Socket
     this->_fd = socket(AF_INET, SOCK_STREAM, PROTOCOL_ANY);
 
     if (this->_fd < 0) {
-        // TODO: Throw exception
-        return;
+        throw exception::StandardFunctionFail("socket");
     }
 
     sockaddr_in serverAddr {};
@@ -30,8 +29,7 @@ ftp::server::Socket::Socket
         sizeof(serverAddr)
     ) < 0) {
         close(this->_fd);
-        // TODO: Throw exception
-        return;
+        throw exception::StandardFunctionFail("bind");
     }
 }
 
@@ -58,7 +56,7 @@ ftp::server::Socket::send
     );
 
     if (bytesWritten == -1) {
-        // TODO: Throw exception
+        throw exception::StandardFunctionFail("write");
     }
 }
 
@@ -76,8 +74,7 @@ ftp::server::Socket::receive
         bytesRead = read(this->_fd, buffer, BUFFER_SIZE);
 
         if (bytesRead < 0) {
-            // TODO: Throw proper exception, for READ FAIL
-            return result;
+            throw exception::StandardFunctionFail("read");
         }
 
         if (bytesRead == 0) {
@@ -125,8 +122,8 @@ ftp::server::Socket::startListening
 ()
     const
 {
-    if (listen(this->_fd, 5) < 0) { // FIXME: 5 is magic number (represents the max amount of simultaneous connections)
+    if (listen(this->_fd, MAX_CLIENTS) < 0) {
         close(this->_fd);
-        // TODO: Throw exception
+        throw exception::StandardFunctionFail("listen");
     }
 }
