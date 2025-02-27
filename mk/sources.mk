@@ -33,4 +33,5 @@ SRC += src/Server/Command/Manager.cpp \
 	src/Server/Command/Commands/Quit.cpp \
 	src/Server/Command/Commands/Cwd.cpp \
 	src/Server/Command/Commands/Pwd.cpp \
-	src/Server/Command/Commands/Cdup.cpp
+	src/Server/Command/Commands/Cdup.cpp \
+	src/Server/Command/Commands/Dele.cpp

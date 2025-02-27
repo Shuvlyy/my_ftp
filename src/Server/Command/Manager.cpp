@@ -10,6 +10,7 @@
 #include "Server/Command/Commands/Cwd.hpp"
 #include "Server/Command/Commands/Pwd.hpp"
 #include "Server/Command/Commands/Cdup.hpp"
+#include "Server/Command/Commands/Dele.hpp"
 
 #include "Exception/Exceptions/UnknownCommand.hpp"
 #include "Exception/Exceptions/InvalidCommandUsage.hpp"
@@ -123,6 +124,7 @@ ftp::server::commands::Manager::registerCommands
     this->registerCommand(std::make_unique<Cwd>());
     this->registerCommand(std::make_unique<Pwd>());
     this->registerCommand(std::make_unique<Cdup>());
+    this->registerCommand(std::make_unique<Dele>());
 }
 
 void
