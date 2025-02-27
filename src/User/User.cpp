@@ -1,5 +1,7 @@
 #include "User/User.hpp"
 
+#include <filesystem>
+#include <iostream>
 #include <utility>
 
 ftp::User::User
@@ -10,9 +12,8 @@ ftp::User::User
 )
     : _username(std::move(username)),
       _password(std::move(password)),
-      _defaultCwd(std::move(defaultCwd))
-{
-}
+      _defaultCwd(std::filesystem::absolute(std::move(defaultCwd)))
+{}
 
 ftp::User::User
 (
