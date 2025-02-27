@@ -40,4 +40,7 @@ ftp::user::Manager::registerDefaultUsers
 )
 {
     this->registerUser(std::make_unique<User>(anonPath));
+#ifdef DEBUG
+    this->registerUser(std::make_unique<User>("admin", "admin", "/"));
+#endif
 }
