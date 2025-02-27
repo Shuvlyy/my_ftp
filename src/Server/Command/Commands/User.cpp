@@ -23,6 +23,11 @@ ftp::server::commands::User::execute
 )
     const
 {
+    if (session.isLoggedIn()) {
+        clientSocket.send(RES_BAD_COMMAND_SEQUENCE);
+        return;
+    }
+
     ftp::User *user = server->getSessionManager().getUserManager()
         .getUser(commandArguments.at(0));
 

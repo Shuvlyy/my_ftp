@@ -30,19 +30,24 @@ namespace ftp::server::commands
         [[nodiscard]] std::string getCommandName()
             const override
         {
-            return "user";
+            return "USER";
         }
 
         [[nodiscard]] std::string getCommandDescription()
             const override
         {
-            return "hlp meow.";
+            return "The argument field is a Telnet string "
+                     "identifying the user. The user identification is that which is required by the "
+                     "server for access to its file system. This command will "
+                     "normally be the first command transmitted by the user after "
+                     "the control connections are made (some servers may require "
+                     "this).";
         }
 
         [[nodiscard]] std::string getCommandSyntax()
             const override
         {
-            return "user [username]";
+            return "USER [username]";
         }
     };
 

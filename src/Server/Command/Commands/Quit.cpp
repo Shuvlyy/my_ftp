@@ -25,6 +25,5 @@ ftp::server::commands::Quit::execute
     const
 {
     clientSocket.send(RES_SERVICE_CLOSING);
-    clientSocket.send(RES_COMMAND_OK);
     server->disconnectClient(clientSocket);
 }

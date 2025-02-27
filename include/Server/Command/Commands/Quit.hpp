@@ -30,19 +30,20 @@ namespace ftp::server::commands
         [[nodiscard]] std::string getCommandName()
             const override
         {
-            return "quit";
+            return "QUIT";
         }
 
         [[nodiscard]] std::string getCommandDescription()
             const override
         {
-            return "Disconnection";
+            return "This command terminates a USER and if file transfer "
+                     "is not in progress, the server closes the control connection.";
         }
 
         [[nodiscard]] std::string getCommandSyntax()
             const override
         {
-            return "quit";
+            return "QUIT";
         }
     };
 

@@ -1,5 +1,9 @@
 #include "Server/Command/Commands/Noop.hpp"
 
+#include "Common/Responses.hpp"
+
+#include <format>
+
 bool
 ftp::server::commands::Noop::isUsageValid
 (
@@ -15,10 +19,10 @@ ftp::server::commands::Noop::execute
 (
     Server *,
     const std::vector<std::string> &,
-    Socket &,
+    Socket &clientSocket,
     Session &
 )
     const
 {
-    // LALALALALLALALALALALALALALLALA
+    clientSocket.send(std::format(RES_COMMAND_OK, this->getCommandName()));
 }

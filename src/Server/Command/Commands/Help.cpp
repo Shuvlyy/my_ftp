@@ -1,6 +1,10 @@
 #include "Server/Command/Commands/Help.hpp"
+
 #include "Server/Server.hpp"
-#include "Exception/Exceptions/UnknownCommand.hpp"
+
+#include "Common/Responses.hpp"
+
+#include "Utilities/Utilities.hpp"
 
 bool
 ftp::server::commands::Help::isUsageValid
@@ -17,42 +21,41 @@ ftp::server::commands::Help::execute
 (
     Server *server,
     const std::vector<std::string> &commandArguments,
-    Socket &,
+    Socket &clientSocket,
     Session &
 )
     const
 {
-    if (commandArguments.empty()) { // General help
-        const std::vector<ICommand *> commands = server->getCommandManager().getCommands();
-
-        for (const auto &command : commands) {
-            std::cout << "- " << command->getCommandName() << ": " << command->getCommandDescription() << std::endl;
-        }
+    if (commandArguments.empty()) {
+        clientSocket.send(RES_HELP);
         return;
     }
 
-    displayCommandHelp(server, commandArguments.at(0));
+    displayCommandHelp(
+        server,
+        commandArguments.at(0),
+        clientSocket
+    );
 }
 
 void
 ftp::server::commands::Help::displayCommandHelp
 (
     Server *server,
-    const std::string &commandName
+    const std::string &commandName,
+    const Socket &clientSocket
 )
 {
-    const ICommand *command = server->getCommandManager().getCommand(commandName);
+    const ICommand *command = server->getCommandManager()
+        .getCommand(Utilities::stringToUpper(commandName));
 
     if (command == nullptr) {
-        throw exception::UnknownCommand(commandName);
+        clientSocket.send(RES_SYNTAX_ERROR);
+        return;
+        // throw exception::UnknownCommand(commandName); // :(
     }
 
-    std::cout << "NAME" << std::endl;
-    std::cout << "\t" << command->getCommandName() << std::endl;
-    std::cout << std::endl;
-    std::cout << "DESCRIPTION" << std::endl;
-    std::cout << "\t" << command->getCommandDescription() << std::endl;
-    std::cout << std::endl;
-    std::cout << "USAGE" << std::endl;
-    std::cout << "\t" << command->getCommandSyntax() << std::endl;
+    const std::string output("214 - " + command->getCommandDescription());
+
+    clientSocket.send(output);
 }

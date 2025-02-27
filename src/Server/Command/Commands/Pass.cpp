@@ -30,16 +30,17 @@ ftp::server::commands::Pass::execute
     }
 
     if (session.getUser() == nullptr) {
-        clientSocket.send(RES_NEED_ACCOUNT);
+        clientSocket.send(RES_BAD_COMMAND_SEQUENCE);
         return;
     }
 
     if (session.isLoggedIn()) {
-        clientSocket.send("already logged in");
+        clientSocket.send(RES_BAD_COMMAND_SEQUENCE);
+        return;
     }
 
     if (!session.login(password)) {
-        clientSocket.send("wrong password");
+        clientSocket.send(RES_NOT_LOGGED_IN);
         return;
     }
 

@@ -30,19 +30,21 @@ namespace ftp::server::commands
         [[nodiscard]] std::string getCommandName()
             const override
         {
-            return "noop";
+            return "NOOP";
         }
 
         [[nodiscard]] std::string getCommandDescription()
             const override
         {
-            return "LALALALALLA LOLOLOLOLO LILILILILIL";
+            return "This command does not affect any parameters or previously "
+                     "entered commands. It specifies no action other than that the "
+                     "server send an OK reply.";
         }
 
         [[nodiscard]] std::string getCommandSyntax()
             const override
         {
-            return "noop";
+            return "NOOP";
         }
     };
 

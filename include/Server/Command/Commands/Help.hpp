@@ -20,35 +20,31 @@ namespace ftp::server::commands
             Session &session
         ) const override;
 
-        [[nodiscard]] bool
-        doesNeedLogin()
-            const override
-        {
-            return false;
-        }
-
         [[nodiscard]] std::string getCommandName()
             const override
         {
-            return "help";
+            return "HELP";
         }
 
         [[nodiscard]] std::string getCommandDescription()
             const override
         {
-            return "Prints out the help about every or a specific command.";
+            return "This command shall cause the server to send helpful "
+                     "information regarding its implementation status over the "
+                     "control connection to the user.";
         }
 
         [[nodiscard]] std::string getCommandSyntax()
             const override
         {
-            return "help [command]";
+            return "HELP [command]";
         }
 
     private:
         static void displayCommandHelp(
             Server *server,
-            const std::string &commandName
+            const std::string &commandName,
+            const Socket &clientSocket
         );
     };
 
