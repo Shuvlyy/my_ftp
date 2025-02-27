@@ -8,7 +8,6 @@
 #include "Exception/Exceptions/InvalidCommandUsage.hpp"
 #include "Exception/Exceptions/UserNotLoggedIn.hpp"
 
-#include <fcntl.h>
 #include <netinet/in.h>
 
 ftp::Server::Server
@@ -50,8 +49,7 @@ ftp::Server::start
         );
 
         if (ret < 0) {
-            // TODO: poll fail, throw proper exception
-            return;
+            throw exception::StandardFunctionFail("poll");
         }
 
         for (auto &fd : this->_pollFds) {
@@ -220,7 +218,7 @@ ftp::Server::handleClientRequest
         this->disconnectClient(clientSocket);
     }
     catch (exception::IException &exception) {
-        std::cout << exception;
+        std::cerr << exception;
     }
 }
 

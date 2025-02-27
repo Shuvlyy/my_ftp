@@ -10,12 +10,12 @@
 int
 main
 (
-    int argc,
+    const int argc,
     char *argv[]
 )
 {
     try {
-        ftp::Parser parser(argc, argv);
+        const ftp::Parser parser(argc, argv);
 
         if (parser.processFlags()) {
             return SH_EXIT_SUCCESS;

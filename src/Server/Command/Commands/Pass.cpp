@@ -16,7 +16,7 @@ ftp::server::commands::Pass::isUsageValid
 void
 ftp::server::commands::Pass::execute
 (
-    Server *server,
+    Server *,
     const std::vector<std::string> &commandArguments,
     Socket &clientSocket,
     Session &session
