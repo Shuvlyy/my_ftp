@@ -7,6 +7,8 @@
 #include "Server/Command/Commands/Pass.hpp"
 #include "Server/Command/Commands/Noop.hpp"
 #include "Server/Command/Commands/Quit.hpp"
+#include "Server/Command/Commands/Cwd.hpp"
+#include "Server/Command/Commands/Pwd.hpp"
 
 #include "Exception/Exceptions/UnknownCommand.hpp"
 #include "Exception/Exceptions/InvalidCommandUsage.hpp"
@@ -58,7 +60,7 @@ ftp::server::commands::Manager::executeCommand
 )
     const
 {
-    const std::string name = Utilities::stringToLower(commandName);
+    const std::string name = Utilities::stringToUpper(commandName);
 
     const ICommand *command = this->getCommand(name);
 
@@ -117,6 +119,8 @@ ftp::server::commands::Manager::registerCommands
     this->registerCommand(std::make_unique<Pass>());
     this->registerCommand(std::make_unique<Noop>());
     this->registerCommand(std::make_unique<Quit>());
+    this->registerCommand(std::make_unique<Cwd>());
+    this->registerCommand(std::make_unique<Pwd>());
 }
 
 void

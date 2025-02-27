@@ -179,15 +179,20 @@ ftp::Server::handleClientRequest
     server::Socket &clientSocket
 )
 {
-
     try {
-        std::string command = clientSocket.receive();
+        const std::string command = clientSocket.receive();
 
         if (shouldBufferBeIgnored(command)) {
             return;
         }
 
         std::vector<std::string> arguments = getCommandArguments(command);
+
+        server::Session &session = this->getSessionManager()
+            .getSession(clientSocket);
+
+        /* Changes the current working directory to session's working directory. */
+        session.cwd(session.getWd());
 
         try {
             this->_commandManager.executeCommand(
@@ -196,7 +201,7 @@ ftp::Server::handleClientRequest
                 clientSocket
             );
 
-            clientSocket.send(RES_COMMAND_OK);
+            // TODO: don't forget this, you could eventually need it: clientSocket.send(RES_COMMAND_OK);
         }
         catch (exception::UnknownCommand &) {
             clientSocket.send(RES_SYNTAX_ERROR);
