@@ -17,7 +17,7 @@ ftp::Utilities::stringToInt
 }
 
 std::string
-ftp::Utilities::stringToLower
+ftp::Utilities::stringToUpper
 (
     const std::string &str
 )
@@ -28,8 +28,8 @@ ftp::Utilities::stringToLower
         s.begin(),
         s.end(),
         s.begin(),
-        [](unsigned char c){
-            return std::tolower(c);
+        [](const unsigned char c){
+            return std::toupper(c);
         }
     );
     return s;
