@@ -1,21 +1,28 @@
 #include "Server/Session/Session.hpp"
 
 #include "Exception/Exceptions/StandardFunctionFail.hpp"
+#include "Exception/Exceptions/UserNotLoggedIn.hpp"
+#include "Exception/Exceptions/WdOutOfScope.hpp"
+#include "Exception/Exceptions/PathIsNotDir.hpp"
 
 #include <filesystem>
 #include <unistd.h>
 
 ftp::server::Session::Session
 (
+    const int fd,
     User *user
 )
-    : _user(user),
+    : _fd(fd),
+      _user(user),
       _isLoggedIn(false)
 {}
 
 ftp::server::Session::Session
-()
-    : Session(nullptr)
+(
+    const int fd
+)
+    : Session(fd, nullptr)
 {}
 
 bool
@@ -43,20 +50,17 @@ ftp::server::Session::cwd
 )
 {
     if (!this->_isLoggedIn || path.empty()) {
-        // TODO: Throw proper exception (UserNotLoggedIn)
         return;
     }
 
     const std::string absolutePath = std::filesystem::weakly_canonical(path);
 
     if (!std::filesystem::is_directory(absolutePath)) {
-        // TODO: Throw proper exception (PathIsNotDir)
-        return;
+        throw exception::PathIsNotDir(absolutePath);
     }
 
     if (!absolutePath.starts_with(this->_user->getDefaultCwd())) {
-        // TODO: Throw proper exception (DirOutOfScope) (no permission)
-        return;
+        throw exception::WdOutOfScope(absolutePath);
     }
 
     if (chdir(absolutePath.c_str()) != 0) {

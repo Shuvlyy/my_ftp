@@ -8,8 +8,8 @@ namespace ftp::server
     class Session final
     {
     public:
-        explicit Session();
-        explicit Session(User *user);
+        explicit Session(int fd);
+        explicit Session(int fd, User *user);
 
         /**
          * Logs the user in (the user associated with the session).
@@ -29,6 +29,7 @@ namespace ftp::server
         void setUser(User *user);
 
     private:
+        int _fd;
         User *_user;
         bool _isLoggedIn;
         std::string _wd;

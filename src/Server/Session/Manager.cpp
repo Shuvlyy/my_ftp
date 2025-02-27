@@ -17,9 +17,11 @@ ftp::server::session::Manager::createSession
         return;
     }
 
+    const int clientFd = clientSocket.getFd();
+
     this->_sessions.emplace(
-        clientSocket.getFd(),
-        Session()
+        clientFd,
+        Session(clientFd)
     );
 }
 
