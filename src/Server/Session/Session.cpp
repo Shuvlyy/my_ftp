@@ -47,12 +47,19 @@ ftp::server::Session::cwd
         return;
     }
 
-    if (!std::filesystem::is_directory(path)) {
+    const std::string absolutePath = std::filesystem::weakly_canonical(path);
+
+    if (!std::filesystem::is_directory(absolutePath)) {
         // TODO: Throw proper exception (PathIsNotDir)
         return;
     }
 
-    if (chdir(path.c_str()) != 0) {
+    if (!absolutePath.starts_with(this->_user->getDefaultCwd())) {
+        // TODO: Throw proper exception (DirOutOfScope) (no permission)
+        return;
+    }
+
+    if (chdir(absolutePath.c_str()) != 0) {
         throw exception::StandardFunctionFail("chdir");
     }
 
