@@ -37,8 +37,8 @@ namespace ftp::server::commands
             const override
         {
             return "This command does not affect any parameters or previously "
-                     "entered commands. It specifies no action other than that the "
-                     "server send an OK reply.";
+                    "entered commands. It specifies no action other than that the "
+                    "server send an OK reply.";
         }
 
         [[nodiscard]] std::string getCommandSyntax()

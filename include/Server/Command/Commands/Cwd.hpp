@@ -30,14 +30,14 @@ namespace ftp::server::commands
             const override
         {
             return "CHANGE WORKING DIRECTOR: This command allows the user "
-                     "to work with a different directory or dataset for file storage "
-                     "or retrieval without altering his login or accounting information.";
+                    "to work with a different directory or dataset for file storage "
+                    "or retrieval without altering his login or accounting information.";
         }
 
         [[nodiscard]] std::string getCommandSyntax()
             const override
         {
-            return "CWD [path]";
+            return "CWD <pathname>";
         }
     };
 

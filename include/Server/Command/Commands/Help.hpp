@@ -30,14 +30,14 @@ namespace ftp::server::commands
             const override
         {
             return "This command shall cause the server to send helpful "
-                     "information regarding its implementation status over the "
-                     "control connection to the user.";
+                    "information regarding its implementation status over the "
+                    "control connection to the user.";
         }
 
         [[nodiscard]] std::string getCommandSyntax()
             const override
         {
-            return "HELP [command]";
+            return "HELP [<command>]";
         }
 
     private:

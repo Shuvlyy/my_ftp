@@ -37,15 +37,15 @@ namespace ftp::server::commands
             const override
         {
             return "The argument field is a Telnet string specifying the "
-                     "user's password. This command must be immediately preceded by the "
-                     "user name command, and, for some sites, completes the user's "
-                     "identification for access control.";
+                    "user's password. This command must be immediately preceded by the "
+                    "user name command, and, for some sites, completes the user's "
+                    "identification for access control.";
         }
 
         [[nodiscard]] std::string getCommandSyntax()
             const override
         {
-            return "PASS [password]";
+            return "PASS <password>";
         }
     };
 

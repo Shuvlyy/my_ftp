@@ -29,13 +29,15 @@ namespace ftp::server::commands
         [[nodiscard]] std::string getCommandDescription()
             const override
         {
-            return "";
+            return "The argument is a HOST-PORT specification for the "
+                   "data port to be used in data connection. A port command would be: "
+                   "PORT h1,h2,h3,h4,p1,p2";
         }
 
         [[nodiscard]] std::string getCommandSyntax()
             const override
         {
-            return "PORT [port]";
+            return "PORT <host-port>";
         }
     };
 

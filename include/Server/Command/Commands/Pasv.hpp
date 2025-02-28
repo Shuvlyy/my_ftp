@@ -29,7 +29,11 @@ namespace ftp::server::commands
         [[nodiscard]] std::string getCommandDescription()
             const override
         {
-            return "";
+            return "This command requests the server-DTP to \"listen\" "
+                   "on a data port (which is not its default data port) and to wait for a "
+                   "connection rather than initiate one upon receipt of a "
+                   "transfer command. The response to this command includes the "
+                   "host and port address this server is listening on.";
         }
 
         [[nodiscard]] std::string getCommandSyntax()

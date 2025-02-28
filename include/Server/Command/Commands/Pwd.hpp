@@ -30,7 +30,7 @@ namespace ftp::server::commands
             const override
         {
             return "This command causes the name of the current working "
-                     "directory to be returned in the reply.";
+                    "directory to be returned in the reply.";
         }
 
         [[nodiscard]] std::string getCommandSyntax()

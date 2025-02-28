@@ -30,13 +30,13 @@ namespace ftp::server::commands
             const override
         {
             return "This command causes the file specified in the pathname "
-                     "to be deleted at the server site.";
+                    "to be deleted at the server site.";
         }
 
         [[nodiscard]] std::string getCommandSyntax()
             const override
         {
-            return "DELE [path]";
+            return "DELE <pathname>";
         }
     };
 

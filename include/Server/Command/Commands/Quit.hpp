@@ -37,7 +37,7 @@ namespace ftp::server::commands
             const override
         {
             return "This command terminates a USER and if file transfer "
-                     "is not in progress, the server closes the control connection.";
+                    "is not in progress, the server closes the control connection.";
         }
 
         [[nodiscard]] std::string getCommandSyntax()

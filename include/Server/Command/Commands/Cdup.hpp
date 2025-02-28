@@ -30,7 +30,7 @@ namespace ftp::server::commands
             const override
         {
             return "CHANGE TO PARENT DIRECTORY: "
-                     "This command is a special case of CWD";
+                    "This command is a special case of CWD";
         }
 
         [[nodiscard]] std::string getCommandSyntax()

@@ -37,17 +37,17 @@ namespace ftp::server::commands
             const override
         {
             return "The argument field is a Telnet string "
-                     "identifying the user. The user identification is that which is required by the "
-                     "server for access to its file system. This command will "
-                     "normally be the first command transmitted by the user after "
-                     "the control connections are made (some servers may require "
-                     "this).";
+                    "identifying the user. The user identification is that which is required by the "
+                    "server for access to its file system. This command will "
+                    "normally be the first command transmitted by the user after "
+                    "the control connections are made (some servers may require "
+                    "this).";
         }
 
         [[nodiscard]] std::string getCommandSyntax()
             const override
         {
-            return "USER [username]";
+            return "USER <username>";
         }
     };
 
