@@ -49,8 +49,12 @@ ftp::server::Session::cwd
     const std::string &path
 )
 {
-    if (!this->_isLoggedIn || path.empty()) {
+    if (path.empty()) {
         return;
+    }
+
+    if (!this->_isLoggedIn) {
+        throw exception::UserNotLoggedIn(this->_fd);
     }
 
     const std::string absolutePath = std::filesystem::weakly_canonical(path);
