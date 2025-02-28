@@ -6,6 +6,8 @@
 
 #include "Common/Responses.hpp"
 
+#include <format>
+
 bool
 ftp::server::commands::Cdup::isUsageValid
 (
@@ -28,7 +30,7 @@ ftp::server::commands::Cdup::execute
 {
     try {
         session.cwd("..");
-        clientSocket.send(RES_FILE_ACTION_REQ);
+        clientSocket.send(std::format(RES_COMMAND_OK, this->getCommandName()));
     }
     catch (exception::WdOutOfScope &exception) {
         clientSocket.send("out of scope (no permission)!!");

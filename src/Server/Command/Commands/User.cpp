@@ -38,5 +38,11 @@ ftp::server::commands::User::execute
 
     session.setUser(user);
 
+    if (user->getPassword().empty()) {
+        session.login("");
+        clientSocket.send(RES_USER_LOGGED_IN);
+        return;
+    }
+
     clientSocket.send(RES_USER_OK_NEED_PASSWORD);
 }

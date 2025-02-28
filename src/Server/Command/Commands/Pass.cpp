@@ -30,7 +30,7 @@ ftp::server::commands::Pass::execute
     }
 
     if (session.getUser() == nullptr) {
-        clientSocket.send(RES_BAD_COMMAND_SEQUENCE);
+        clientSocket.send(RES_NEED_ACCOUNT);
         return;
     }
 
