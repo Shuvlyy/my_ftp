@@ -9,7 +9,7 @@
 namespace ftp::server
 {
 
-    class Socket final
+    class Socket
     {
     public:
         /**
@@ -52,7 +52,7 @@ namespace ftp::server
 
         void startListening() const;
 
-    private:
+    protected:
         int _fd;
     };
 

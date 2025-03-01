@@ -3,7 +3,7 @@
 
 ---
 
-The goal of this project is to create a **FTP server**.
+The goal of this project is to create an **FTP server**.
 
 You MUST implement the given protocol (bonuses must be `RFC959` compliant). \
 You MUST implement request sequences that are explained in the protocol (more information can be found in `RFC959`).

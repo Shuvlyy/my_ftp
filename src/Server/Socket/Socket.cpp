@@ -18,15 +18,15 @@ ftp::server::Socket::Socket
         throw exception::StandardFunctionFail("socket");
     }
 
-    sockaddr_in serverAddr {};
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_addr.s_addr = INADDR_ANY;
-    serverAddr.sin_port = htons(port);
+    sockaddr_in serverAddress {};
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_addr.s_addr = INADDR_ANY;
+    serverAddress.sin_port = htons(port);
 
     if (bind(
         this->_fd,
-        reinterpret_cast<sockaddr *>(&serverAddr),
-        sizeof(serverAddr)
+        reinterpret_cast<sockaddr *>(&serverAddress),
+        sizeof(serverAddress)
     ) < 0) {
         this->closeSocket();
         throw exception::StandardFunctionFail("bind");
