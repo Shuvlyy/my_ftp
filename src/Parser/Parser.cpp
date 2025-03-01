@@ -1,7 +1,10 @@
 #include "Parser/Parser.hpp"
 
+#include <filesystem>
+
 #include "Exception/Exceptions/InvalidUsage.hpp"
 #include "Exception/Exceptions/UnknownFlag.hpp"
+#include "Exception/Exceptions/PathIsNotDir.hpp"
 
 #include "Utilities/Utilities.hpp"
 
@@ -9,10 +12,10 @@
 
 ftp::Parser::Parser
 (
-    int argc,
+    const int argc,
     char *argv[]
 )
-    : _port(0)
+    : _port()
 {
     this->parse(argc, argv);
 }
@@ -20,7 +23,7 @@ ftp::Parser::Parser
 void
 ftp::Parser::parse
 (
-    int argc,
+    const int argc,
     char *argv[]
 )
 {
@@ -39,6 +42,11 @@ ftp::Parser::parse
 
         this->_port = static_cast<short>(Utilities::stringToInt(this->_tokens.at(0)));
         this->_path = this->_tokens.at(1);
+
+        if (!(std::filesystem::is_directory(this->_path) &&
+            std::filesystem::exists(this->_path))) {
+            throw exception::PathIsNotDir(this->_path);
+        }
     }
 }
 
