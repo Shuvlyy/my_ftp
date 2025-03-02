@@ -11,25 +11,28 @@ ftp::server::Socket::Socket
 (
     const short port
 )
+    : _address{}
 {
     this->_fd = socket(AF_INET, SOCK_STREAM, PROTOCOL_ANY);
+    int opt = 0;
 
     if (this->_fd < 0) {
         throw exception::StandardFunctionFail("socket");
     }
 
-    sockaddr_in serverAddress {};
-    serverAddress.sin_family = AF_INET;
-    serverAddress.sin_addr.s_addr = INADDR_ANY;
-    serverAddress.sin_port = htons(port);
+    this->_address.sin_family = AF_INET;
+    this->_address.sin_addr.s_addr = INADDR_ANY;
+    this->_address.sin_port = htons(port);
 
-    if (bind(
+    if (setsockopt(
         this->_fd,
-        reinterpret_cast<sockaddr *>(&serverAddress),
-        sizeof(serverAddress)
+        SOL_SOCKET,
+        SO_REUSEADDR,
+        &opt,
+        sizeof(opt)
     ) < 0) {
         this->closeSocket();
-        throw exception::StandardFunctionFail("bind");
+        throw exception::StandardFunctionFail("setsockopt");
     }
 }
 
@@ -37,7 +40,7 @@ ftp::server::Socket::Socket
 (
     const int fd
 )
-    : _fd(fd)
+    : _fd(fd), _address{}
 {}
 
 void
@@ -70,7 +73,6 @@ ftp::server::Socket::receive
     const
 {
     std::string result;
-    ssize_t bytesRead;
 
     while (true) {
         if (this->_fd == -1) {
@@ -78,8 +80,7 @@ ftp::server::Socket::receive
         }
 
         char buffer[BUFFER_SIZE];
-
-        bytesRead = read(this->_fd, buffer, BUFFER_SIZE);
+        const ssize_t bytesRead = read(this->_fd, buffer, BUFFER_SIZE);
 
         if (bytesRead < 0) {
             throw exception::StandardFunctionFail("read");
@@ -128,10 +129,25 @@ ftp::server::Socket::getFd
 void
 ftp::server::Socket::startListening
 ()
-    const
 {
+    if (bind(
+        this->_fd,
+        reinterpret_cast<sockaddr *>(&this->_address),
+        sizeof(this->_address)
+    ) < 0) {
+        this->closeSocket();
+        throw exception::StandardFunctionFail("bind");
+    }
+
     if (listen(this->_fd, MAX_CLIENTS) < 0) {
         close(this->_fd);
         throw exception::StandardFunctionFail("listen");
     }
+}
+
+sockaddr_in &
+ftp::server::Socket::getAddress
+()
+{
+    return this->_address;
 }

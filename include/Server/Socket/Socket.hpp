@@ -5,6 +5,7 @@
 #define MAX_CLIENTS     16
 
 #include <string>
+#include <netinet/in.h>
 
 namespace ftp::server
 {
@@ -50,10 +51,13 @@ namespace ftp::server
          */
         [[nodiscard]] int getFd() const;
 
-        void startListening() const;
+        [[nodiscard]] sockaddr_in &getAddress();
+
+        void startListening();
 
     protected:
         int _fd;
+        sockaddr_in _address;
     };
 
 }
