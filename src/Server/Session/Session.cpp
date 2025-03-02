@@ -13,7 +13,8 @@ ftp::server::Session::Session
     const int fd,
     User *user
 )
-    : _fd(fd),
+    : _controlSocket(Socket(fd)),
+      _dataSocket(DataSocket()),
       _user(user),
       _isLoggedIn(false)
 {}
@@ -54,7 +55,7 @@ ftp::server::Session::cwd
     }
 
     if (!this->_isLoggedIn) {
-        throw exception::UserNotLoggedIn(this->_fd);
+        throw exception::UserNotLoggedIn(this->_controlSocket.getFd());
     }
 
     const std::string absolutePath = std::filesystem::weakly_canonical(path);
@@ -74,6 +75,19 @@ ftp::server::Session::cwd
     this->_wd = std::filesystem::current_path();
 }
 
+ftp::server::Socket &
+ftp::server::Session::getControlSocket
+()
+{
+    return this->_controlSocket;
+}
+
+ftp::server::DataSocket &
+ftp::server::Session::getDataSocket
+()
+{
+    return this->_dataSocket;
+}
 
 ftp::User *
 ftp::server::Session::getUser

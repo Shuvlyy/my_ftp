@@ -2,6 +2,8 @@
 
 #include "User/User.hpp"
 
+#include "Server/Socket/DataSocket.hpp"
+
 namespace ftp::server
 {
 
@@ -22,6 +24,8 @@ namespace ftp::server
 
         void cwd(const std::string &path);
 
+        [[nodiscard]] Socket &getControlSocket();
+        [[nodiscard]] DataSocket &getDataSocket();
         [[nodiscard]] User *getUser() const;
         [[nodiscard]] bool isLoggedIn() const;
         [[nodiscard]] std::string getWd() const;
@@ -29,7 +33,8 @@ namespace ftp::server
         void setUser(User *user);
 
     private:
-        int _fd;
+        Socket _controlSocket;
+        DataSocket _dataSocket;
         User *_user;
         bool _isLoggedIn;
         std::string _wd;
