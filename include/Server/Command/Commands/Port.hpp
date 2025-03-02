@@ -39,6 +39,9 @@ namespace ftp::server::commands
         {
             return "PORT <host-port>";
         }
+
+    private:
+        [[nodiscard]] std::vector<int> parseArgs(const std::string &arg) const;
     };
 
 }
