@@ -32,9 +32,9 @@ ftp::server::commands::Cwd::execute
         clientSocket.send(RES_FILE_ACTION_REQ);
     }
     catch (exception::PathIsNotDir &exception) {
-        clientSocket.send("dis not a dir mate");
+        clientSocket.send(RES_ACTION_NOT_TAKEN); // TODO: Maybe a more specific error code?
     }
     catch (exception::WdOutOfScope &exception) {
-        clientSocket.send("out of scope (no permission)!!");
+        clientSocket.send(RES_ACTION_NOT_TAKEN);
     }
 }
