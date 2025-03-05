@@ -34,3 +34,18 @@ ftp::Utilities::stringToUpper
     );
     return s;
 }
+
+std::string
+ftp::Utilities::cleanString
+(
+    const std::string &str
+)
+{
+    const size_t first = str.find_first_not_of(" \t");
+    if (first == std::string::npos) {
+        return "";
+    }
+
+    const size_t last = str.find_last_not_of(" \t");
+    return str.substr(first, (last - first + 1));
+}
