@@ -8,11 +8,13 @@
 #include "Exception/Exceptions/InvalidCommandUsage.hpp"
 #include "Exception/Exceptions/UserNotLoggedIn.hpp"
 
+#include "Utilities/Utilities.hpp"
+
 #include <netinet/in.h>
 
 ftp::Server::Server
 (
-    const short port,
+    const unsigned short port,
     const std::string &path
 )
     : _isRunning(false),
@@ -134,24 +136,6 @@ ftp::Server::handleNewConnection
     clientSocket.send(RES_SERVICE_READY);
 }
 
-static bool
-shouldBufferBeIgnored
-(
-    const std::string &buffer
-)
-{
-    if (buffer.empty()) {
-        return true;
-    }
-
-    for (const char it : buffer) {
-        if (it != ' ' && it != '\t') {
-            return false;
-        }
-    }
-    return true;
-}
-
 static std::vector<std::string>
 getCommandArguments
 (
@@ -178,9 +162,11 @@ ftp::Server::handleClientRequest
 )
 {
     try {
-        const std::string command = clientSocket.receive();
+        std::string command = clientSocket.receive();
 
-        if (shouldBufferBeIgnored(command)) {
+        command = Utilities::cleanString(command);
+
+        if (command.empty()) {
             return;
         }
 
