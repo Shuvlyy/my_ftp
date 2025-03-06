@@ -14,7 +14,7 @@ ftp::server::Session::Session
     User *user
 )
     : _controlSocket(Socket(fd)),
-      _dataSocket(DataSocket()),
+      _dataSocket(DataSocket('J')),
       _user(user),
       _isLoggedIn(false)
 {}
@@ -59,6 +59,10 @@ ftp::server::Session::cwd
     }
 
     const std::string absolutePath = std::filesystem::weakly_canonical(path);
+
+    if (path == absolutePath) {
+        return;
+    }
 
     if (!std::filesystem::is_directory(absolutePath)) {
         throw exception::PathIsNotDir(absolutePath);
