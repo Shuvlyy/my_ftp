@@ -38,7 +38,7 @@ void
 ftp::server::commands::Pasv::execute
 (
     Server *,
-    const std::vector<std::string> &commandArguments,
+    const std::vector<std::string> &,
     Socket &clientSocket,
     Session &session
 )
