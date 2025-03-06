@@ -77,11 +77,12 @@ ftp::server::commands::Port::execute
     try {
         dataSocket = DataSocket(
             ip.str(),
-            static_cast<short>(tokens.at(4) * 256 + tokens.at(5))
+            static_cast<unsigned short>(tokens.at(4) * 256 + tokens.at(5))
         );
     }
-    catch (const exception::IException &) {
+    catch (const exception::IException &exception) {
         clientSocket.send(RES_CANT_OPEN_DATA);
+        std::cerr << exception;
         return;
     }
 

@@ -18,7 +18,7 @@ namespace ftp::server
          *
          * @param   port   Port to listen to
          */
-        explicit Socket(short port);
+        explicit Socket(unsigned short port);
 
         /**
          * Creates a client socket, from an existing file descriptor.

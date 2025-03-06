@@ -40,7 +40,7 @@ ftp::Parser::parse
             throw exception::InvalidUsage();
         }
 
-        this->_port = static_cast<short>(Utilities::stringToInt(this->_tokens.at(0)));
+        this->_port = static_cast<unsigned short>(Utilities::stringToInt(this->_tokens.at(0)));
         this->_path = this->_tokens.at(1);
 
         if (!(std::filesystem::is_directory(this->_path) &&
@@ -75,7 +75,7 @@ ftp::Parser::processFlags
     throw exception::UnknownFlag(this->_tokens.at(0));
 }
 
-short
+unsigned short
 ftp::Parser::getPort
 ()
     const

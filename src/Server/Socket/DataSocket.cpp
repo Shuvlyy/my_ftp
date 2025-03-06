@@ -7,19 +7,12 @@
 ftp::server::DataSocket::DataSocket
 (
     const std::string &clientIp,
-    const short clientPort
+    const unsigned short clientPort
 )
     : Socket(clientPort),
       _state(ACTIVE)
 {
-    if (inet_pton(
-        AF_INET,
-        clientIp.c_str(),
-        &this->_address.sin_addr
-    ) < 0) {
-        this->closeSocket();
-        throw exception::StandardFunctionFail("inet_pton");
-    }
+    this->_address.sin_addr.s_addr = inet_addr(clientIp.c_str());
 
     if (connect(
         this->_fd,
@@ -33,10 +26,12 @@ ftp::server::DataSocket::DataSocket
 
 ftp::server::DataSocket::DataSocket
 ()
-    : Socket(static_cast<short>(0)),
+    : Socket(static_cast<unsigned short>(0)),
       _state(PASSIVE)
 {
     socklen_t addressLen = sizeof(this->_address);
+
+    this->startListening();
 
     if (getsockname(
         this->_fd,
@@ -46,9 +41,12 @@ ftp::server::DataSocket::DataSocket
         this->closeSocket();
         throw exception::StandardFunctionFail("getsockname");
     }
-
-    this->startListening();
 }
+
+ftp::server::DataSocket::DataSocket(char)
+    : Socket(-1),
+      _state(DEADASS)
+{}
 
 void
 ftp::server::DataSocket::acceptConnection
@@ -62,4 +60,12 @@ ftp::server::DataSocket::acceptConnection
 
     this->closeSocket();
     this->_fd = newFd;
+}
+
+void
+ftp::server::DataSocket::closeSocket
+()
+{
+    this->_state = DEADASS;
+    this->Socket::closeSocket();
 }

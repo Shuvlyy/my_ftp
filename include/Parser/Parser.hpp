@@ -19,13 +19,13 @@ namespace ftp
          */
         [[nodiscard]] bool processFlags() const;
 
-        [[nodiscard]] short getPort() const;
+        [[nodiscard]] unsigned short getPort() const;
         [[nodiscard]] std::string getPath() const;
         [[nodiscard]] bool hasFlag(const std::string &flag) const;
         [[nodiscard]] std::string getFlagValue(const std::string &flag) const;
 
     private:
-        short _port;
+        unsigned short _port;
         std::string _path;
         std::vector<std::string> _tokens;
 

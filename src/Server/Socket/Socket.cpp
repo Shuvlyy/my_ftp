@@ -9,7 +9,7 @@
 
 ftp::server::Socket::Socket
 (
-    const short port
+    const unsigned short port
 )
     : _address{}
 {

@@ -17,7 +17,7 @@ namespace ftp
     {
     public:
         explicit Server(
-            short port,
+            unsigned short port,
             const std::string &path
         );
         ~Server();
