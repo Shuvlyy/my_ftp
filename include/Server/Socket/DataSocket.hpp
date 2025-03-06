@@ -25,7 +25,7 @@ namespace ftp::server
          * @param   clientIp    Client's IP address
          * @param   clientPort  Port provided by client
          */
-        DataSocket(const std::string &clientIp, short clientPort);
+        DataSocket(const std::string &clientIp, unsigned short clientPort);
 
         /**
          * Constructor for passive mode (server socket).
@@ -33,7 +33,14 @@ namespace ftp::server
          */
         DataSocket();
 
+        /**
+         * Creates an empty data socket, not initialized yet.
+         */
+        explicit DataSocket(char);
+
         void acceptConnection();
+
+        void closeSocket();
 
     private:
         State _state;
