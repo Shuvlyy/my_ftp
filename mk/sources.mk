@@ -11,7 +11,8 @@ SRC += src/Main.cpp
 
 SRC += src/Exception/AException.cpp
 
-SRC += src/Utilities/Utilities.cpp
+SRC += src/Utilities/Utilities.cpp \
+	src/Utilities/DirContentFormatter.cpp
 
 SRC += src/Parser/Parser.cpp
 
@@ -37,4 +38,5 @@ SRC += src/Server/Command/Manager.cpp \
 	src/Server/Command/Commands/Cdup.cpp \
 	src/Server/Command/Commands/Dele.cpp \
 	src/Server/Command/Commands/Port.cpp \
-	src/Server/Command/Commands/Pasv.cpp
+	src/Server/Command/Commands/Pasv.cpp \
+	src/Server/Command/Commands/List.cpp

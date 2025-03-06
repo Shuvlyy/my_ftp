@@ -17,6 +17,9 @@
 // 3xx - Positive Intermediate Replies
 #define RES_USER_OK_NEED_PASSWORD "331 User name okay, need password."
 #define RES_NEED_ACCOUNT "332 Need account for login."
+
+// 4xx - Data
+#define RES_NO_DATA_SOCKET_OPENED "425 No data connection was established."
 #define RES_CANT_OPEN_DATA "425 Can't open data connection."
 #define RES_TRANSFER_ABORTED "426 Connection closed; transfer aborted."
 
@@ -26,3 +29,6 @@
 #define RES_BAD_COMMAND_SEQUENCE "503 Bad sequence of commands."
 #define RES_NOT_LOGGED_IN "530 Not logged in."
 #define RES_ACTION_NOT_TAKEN "550 Requested action not taken."
+#define RES_NOT_DIR "550 Is not directory."
+#define RES_FILE_NOT_FOUND "550 Directory not found."
+#define RES_UNKNOWN "550 Unknown error."
