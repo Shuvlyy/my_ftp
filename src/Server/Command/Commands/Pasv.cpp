@@ -59,4 +59,6 @@ ftp::server::commands::Pasv::execute
         ipTokens.at(0), ipTokens.at(1), ipTokens.at(2), ipTokens.at(3),
         port / 256, port % 256
     ));
+
+    dataSocket.acceptConnection();
 }
