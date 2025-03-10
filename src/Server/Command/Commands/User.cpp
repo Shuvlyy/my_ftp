@@ -31,18 +31,18 @@ ftp::server::commands::User::execute
     ftp::User *user = server->getSessionManager().getUserManager()
         .getUser(commandArguments.at(0));
 
-    if (user == nullptr) {
+    if (user == nullptr) { // FIXME: According to the automated tests, you should just send 331? Just as if the user exists?
         clientSocket.send(RES_NOT_LOGGED_IN);
         return;
     }
 
     session.setUser(user);
 
-    if (user->getPassword().empty()) {
-        session.login("");
-        clientSocket.send(RES_USER_LOGGED_IN);
-        return;
-    }
+    // if (user->getPassword().empty()) {
+    //     session.login("");
+    //     clientSocket.send(RES_USER_LOGGED_IN);
+    //     return;
+    // }
 
     clientSocket.send(RES_USER_OK_NEED_PASSWORD);
 }
