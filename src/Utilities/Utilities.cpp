@@ -1,7 +1,12 @@
 #include "Utilities/Utilities.hpp"
 
+#include "Exception/Exceptions/FileNotFound.hpp"
+
 #include <algorithm>
 #include <sstream>
+#include <filesystem>
+#include <unistd.h>
+#include <limits.h>
 
 int
 ftp::Utilities::stringToInt
@@ -48,4 +53,21 @@ ftp::Utilities::cleanString
 
     const size_t last = str.find_last_not_of(" \t");
     return str.substr(first, (last - first + 1));
+}
+
+std::string
+ftp::Utilities::getAbsolutePath
+(
+    const std::string &root,
+    const std::string &filepath
+)
+{
+    namespace fs = std::filesystem;
+
+    const fs::path path = fs::path(root) / fs::path(filepath);
+
+    if (!exists(path)) {
+        throw exception::FileNotFound(path);
+    }
+    return canonical(path).string();
 }

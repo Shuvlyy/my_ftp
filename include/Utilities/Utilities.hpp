@@ -14,6 +14,7 @@ namespace ftp
         static std::string stringToUpper(const std::string &str);
         static std::string cleanString(const std::string &str);
         static std::string getDirContents(const std::string &filepath);
+        static std::string getAbsolutePath(const std::string &root, const std::string &filepath);
     };
 
 }
