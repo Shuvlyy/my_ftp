@@ -2,7 +2,7 @@
 
 #include "Server/Command/ACommand.hpp"
 
-namespace ftp::server::commands
+namespace ftp::server::command
 {
 
     class Retr final
@@ -35,8 +35,11 @@ namespace ftp::server::commands
         [[nodiscard]] std::string getCommandSyntax()
             const override
         {
-            return "RETR [<pathname>]";
+            return "RETR <pathname>";
         }
+
+    private:
+        void startDownload(Session &session, const std::string &filepath) const;
     };
 
 }

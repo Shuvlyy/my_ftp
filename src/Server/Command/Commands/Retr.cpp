@@ -5,11 +5,14 @@
 #include "Common/Responses.hpp"
 
 #include "Exception/Exceptions/StandardFunctionFail.hpp"
+#include "Exception/Exceptions/FileNotFound.hpp"
 
 #include <filesystem>
+#include <fstream>
+#include "Utilities/Utilities.hpp"
 
 bool
-ftp::server::commands::Retr::isUsageValid
+ftp::server::command::Retr::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -19,7 +22,38 @@ ftp::server::commands::Retr::isUsageValid
 }
 
 void
-ftp::server::commands::Retr::execute
+ftp::server::command::Retr::startDownload
+(
+    Session &session,
+    const std::string &filepath
+)
+    const
+{
+    const Socket &controlSocket = session.getControlSocket();
+    const Socket &dataSocket = session.getDataSocket();
+
+    std::ifstream file(filepath, std::ios::binary);
+
+    if (!file.is_open()) {
+        controlSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise way?
+        return;
+    }
+
+    controlSocket.send(RES_FILE_STATUS_OK);
+
+    char buffer[BUFFER_SIZE];
+
+    while (file.read(buffer, sizeof(buffer)) || file.gcount() > 0) {
+        dataSocket.send(std::string(buffer, file.gcount()));
+    }
+
+    file.close();
+
+    controlSocket.send(RES_TRANSFER_COMPLETE);
+}
+
+void
+ftp::server::command::Retr::execute
 (
     Server *,
     const std::vector<std::string> &commandArguments,
@@ -33,7 +67,27 @@ ftp::server::commands::Retr::execute
         return;
     }
 
-    const int pid = fork();
+    std::string filepath;
+
+    try {
+        filepath = Utilities::getAbsolutePath(session.getWd(), commandArguments.at(0));
+    }
+    catch (const exception::FileNotFound &) {
+        clientSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise error message.
+        return;
+    }
+
+    if (!filepath.starts_with(session.getUser()->getDefaultCwd())) {
+        clientSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise error message.
+        return;
+    }
+
+    if (std::filesystem::is_directory(filepath)) {
+        clientSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise error message.
+        return;
+    }
+
+    const int pid = fourchette();
 
     if (pid < 0) {
         throw exception::StandardFunctionFail("fork");
@@ -43,42 +97,7 @@ ftp::server::commands::Retr::execute
         return;
     }
 
-//    const std::string oldPath = session.getWd();
-//
-//    const std::string &path = commandArguments.size() == 1
-//        ? commandArguments.at(0)
-//        : session.getWd();
-//
-//    /* Entering the folder the user wants to list in */
-//    try {
-//        session.cwd(path);
-//    }
-//    catch (const exception::PathIsNotDir &) {
-//        clientSocket.send(RES_NOT_DIR);
-//        return;
-//    }
-//    catch (const exception::WdOutOfScope &) {
-//        clientSocket.send(RES_ACTION_NOT_TAKEN);
-//        return;
-//    }
-//    catch (const exception::IException &exception) {
-//        clientSocket.send(RES_UNKNOWN);
-//        std::cerr << exception;
-//        return;
-//    }
-//
-//    clientSocket.send(RES_FILE_STATUS_OK);
-//
-//    try {
-//        session.getDataSocket().send(Utilities::getDirContents(session.getWd()));
-//        clientSocket.send(RES_TRANSFER_COMPLETE);
-//    } catch (const exception::IException &exception) {
-//        clientSocket.send(RES_TRANSFER_ABORTED);
-//        std::cerr << exception;
-//    }
-//
-//    /* Going back to where the client was */
-//    session.cwd(oldPath);
+    this->startDownload(session, filepath);
 
     session.getDataSocket().closeSocket();
 
