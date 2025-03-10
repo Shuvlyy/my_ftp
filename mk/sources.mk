@@ -40,4 +40,6 @@ SRC += src/Server/Command/Manager.cpp \
 	src/Server/Command/Commands/Port.cpp \
 	src/Server/Command/Commands/Pasv.cpp \
 	src/Server/Command/Commands/List.cpp \
-	src/Server/Command/Commands/Type.cpp
+	src/Server/Command/Commands/Type.cpp \
+	src/Server/Command/Commands/Stor.cpp \
+	src/Server/Command/Commands/Retr.cpp
