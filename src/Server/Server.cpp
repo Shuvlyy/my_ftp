@@ -19,7 +19,7 @@ ftp::Server::Server
 )
     : _isRunning(false),
       _serverSocket(server::Socket(port)),
-      _commandManager(server::commands::Manager(this)),
+      _commandManager(server::command::Manager(this)),
       _sessionManager(server::session::Manager(path))
 {
     this->_serverSocket.startListening();
@@ -87,7 +87,7 @@ ftp::Server::stop
     this->_serverSocket.closeSocket();
 }
 
-ftp::server::commands::Manager &
+ftp::server::command::Manager &
 ftp::Server::getCommandManager
 ()
 {

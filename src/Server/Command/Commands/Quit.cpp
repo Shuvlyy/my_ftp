@@ -5,7 +5,7 @@
 #include "Common/Responses.hpp"
 
 bool
-ftp::server::commands::Quit::isUsageValid
+ftp::server::command::Quit::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -15,7 +15,7 @@ ftp::server::commands::Quit::isUsageValid
 }
 
 void
-ftp::server::commands::Quit::execute
+ftp::server::command::Quit::execute
 (
     Server *server,
     const std::vector<std::string> &,

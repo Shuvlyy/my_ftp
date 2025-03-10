@@ -7,7 +7,7 @@
 #include "Utilities/Utilities.hpp"
 
 bool
-ftp::server::commands::Help::isUsageValid
+ftp::server::command::Help::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -17,7 +17,7 @@ ftp::server::commands::Help::isUsageValid
 }
 
 void
-ftp::server::commands::Help::execute
+ftp::server::command::Help::execute
 (
     Server *server,
     const std::vector<std::string> &commandArguments,
@@ -39,7 +39,7 @@ ftp::server::commands::Help::execute
 }
 
 void
-ftp::server::commands::Help::displayCommandHelp
+ftp::server::command::Help::displayCommandHelp
 (
     Server *server,
     const std::string &commandName,
@@ -52,7 +52,7 @@ ftp::server::commands::Help::displayCommandHelp
     if (command == nullptr) {
         clientSocket.send(RES_SYNTAX_ERROR);
         return;
-        // throw exception::UnknownCommand(commandName); // :(
+        // throw exception::UtenknownCommand(commandName); // :(
     }
 
     const std::string output("214 - " + command->getCommandDescription());

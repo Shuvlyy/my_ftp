@@ -29,13 +29,13 @@ namespace ftp
             const server::Socket &clientSocket
         );
 
-        [[nodiscard]] server::commands::Manager &getCommandManager();
+        [[nodiscard]] server::command::Manager &getCommandManager();
         [[nodiscard]] server::session::Manager &getSessionManager();
 
     private:
         bool _isRunning;
         server::Socket _serverSocket;
-        server::commands::Manager _commandManager;
+        server::command::Manager _commandManager;
         server::session::Manager _sessionManager;
         std::vector<pollfd> _pollFds;
 

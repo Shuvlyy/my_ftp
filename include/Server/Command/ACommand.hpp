@@ -2,7 +2,7 @@
 
 #include "ICommand.hpp"
 
-namespace ftp::server::commands
+namespace ftp::server::command
 {
 
     class ACommand

@@ -9,11 +9,12 @@
 #include "Exception/Exceptions/PathIsNotDir.hpp"
 #include "Exception/Exceptions/StandardFunctionFail.hpp"
 #include "Exception/Exceptions/WdOutOfScope.hpp"
+#include "Exception/Exceptions/FileNotFound.hpp"
 
 #include <filesystem>
 
 bool
-ftp::server::commands::List::isUsageValid
+ftp::server::command::List::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -23,7 +24,7 @@ ftp::server::commands::List::isUsageValid
 }
 
 void
-ftp::server::commands::List::execute
+ftp::server::command::List::execute
 (
     Server *,
     const std::vector<std::string> &commandArguments,
@@ -37,7 +38,7 @@ ftp::server::commands::List::execute
         return;
     }
 
-    const int pid = fork();
+    const int pid = fourchette();
 
     if (pid < 0) {
         throw exception::StandardFunctionFail("fork");
@@ -63,6 +64,10 @@ ftp::server::commands::List::execute
     }
     catch (const exception::WdOutOfScope &) {
         clientSocket.send(RES_ACTION_NOT_TAKEN);
+        return;
+    }
+    catch (const exception::FileNotFound &) {
+        clientSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe more precise error message?
         return;
     }
     catch (const exception::IException &exception) {

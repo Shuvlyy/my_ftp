@@ -9,7 +9,7 @@
 #include "Common/Responses.hpp"
 
 bool
-ftp::server::commands::Cwd::isUsageValid
+ftp::server::command::Cwd::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -19,7 +19,7 @@ ftp::server::commands::Cwd::isUsageValid
 }
 
 void
-ftp::server::commands::Cwd::execute
+ftp::server::command::Cwd::execute
 (
     Server *,
     const std::vector<std::string> &commandArguments,

@@ -17,7 +17,7 @@ namespace ftp
     }
 }
 
-namespace ftp::server::commands
+namespace ftp::server::command
 {
 
     class ICommand

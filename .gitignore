@@ -7,3 +7,4 @@ vgcore*
 *.gc??
 *.out
 ftp_test
+*.log

@@ -9,7 +9,7 @@
 #include <format>
 
 bool
-ftp::server::commands::Cdup::isUsageValid
+ftp::server::command::Cdup::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -19,7 +19,7 @@ ftp::server::commands::Cdup::isUsageValid
 }
 
 void
-ftp::server::commands::Cdup::execute
+ftp::server::command::Cdup::execute
 (
     Server *,
     const std::vector<std::string> &,

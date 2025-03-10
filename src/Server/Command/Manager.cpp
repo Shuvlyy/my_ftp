@@ -24,7 +24,7 @@
 
 #include "Utilities/Utilities.hpp"
 
-ftp::server::commands::Manager::Manager
+ftp::server::command::Manager::Manager
 (
     Server *parent
 )
@@ -33,8 +33,8 @@ ftp::server::commands::Manager::Manager
     this->registerCommands();
 }
 
-std::vector<ftp::server::commands::ICommand *>
-ftp::server::commands::Manager::getCommands
+std::vector<ftp::server::command::ICommand *>
+ftp::server::command::Manager::getCommands
 ()
     const
 {
@@ -46,8 +46,8 @@ ftp::server::commands::Manager::getCommands
     return result;
 }
 
-ftp::server::commands::ICommand *
-ftp::server::commands::Manager::getCommand
+ftp::server::command::ICommand *
+ftp::server::command::Manager::getCommand
 (
     const std::string &commandName
 )
@@ -60,7 +60,7 @@ ftp::server::commands::Manager::getCommand
 }
 
 void
-ftp::server::commands::Manager::executeCommand
+ftp::server::command::Manager::executeCommand
 (
     const std::string &commandName,
     std::vector<std::string> &commandArguments,
@@ -106,7 +106,7 @@ ftp::server::commands::Manager::executeCommand
 }
 
 void
-ftp::server::commands::Manager::executeCommand
+ftp::server::command::Manager::executeCommand
 (
     const std::string &commandName,
     Socket &clientSocket
@@ -119,7 +119,7 @@ ftp::server::commands::Manager::executeCommand
 }
 
 void
-ftp::server::commands::Manager::registerCommands
+ftp::server::command::Manager::registerCommands
 ()
 {
     this->registerCommand(std::make_unique<Help>());
@@ -140,7 +140,7 @@ ftp::server::commands::Manager::registerCommands
 }
 
 void
-ftp::server::commands::Manager::registerCommand
+ftp::server::command::Manager::registerCommand
 (
     std::unique_ptr<ICommand> command
 )

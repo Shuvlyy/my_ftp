@@ -11,7 +11,7 @@
 #include <sstream>
 
 bool
-ftp::server::commands::Port::isUsageValid
+ftp::server::command::Port::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -33,7 +33,7 @@ ftp::server::commands::Port::isUsageValid
 }
 
 std::vector<int>
-ftp::server::commands::Port::parseArgs
+ftp::server::command::Port::parseArgs
 (
     const std::string &arg
 )
@@ -56,7 +56,7 @@ ftp::server::commands::Port::parseArgs
 }
 
 void
-ftp::server::commands::Port::execute
+ftp::server::command::Port::execute
 (
     Server *,
     const std::vector<std::string> &commandArguments,

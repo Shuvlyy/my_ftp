@@ -2,7 +2,7 @@
 
 #include "Server/Command/ACommand.hpp"
 
-namespace ftp::server::commands
+namespace ftp::server::command
 {
 
     class Pwd final

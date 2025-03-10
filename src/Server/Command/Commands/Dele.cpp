@@ -9,7 +9,7 @@
 #include <filesystem>
 
 bool
-ftp::server::commands::Dele::isUsageValid
+ftp::server::command::Dele::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -19,7 +19,7 @@ ftp::server::commands::Dele::isUsageValid
 }
 
 void
-ftp::server::commands::Dele::execute
+ftp::server::command::Dele::execute
 (
     Server *,
     const std::vector<std::string> &commandArguments,

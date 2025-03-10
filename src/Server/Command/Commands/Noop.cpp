@@ -5,7 +5,7 @@
 #include <format>
 
 bool
-ftp::server::commands::Noop::isUsageValid
+ftp::server::command::Noop::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -15,7 +15,7 @@ ftp::server::commands::Noop::isUsageValid
 }
 
 void
-ftp::server::commands::Noop::execute
+ftp::server::command::Noop::execute
 (
     Server *,
     const std::vector<std::string> &,

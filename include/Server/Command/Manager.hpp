@@ -12,7 +12,7 @@ namespace ftp
     class Server;
 }
 
-namespace ftp::server::commands
+namespace ftp::server::command
 {
 
     class Manager

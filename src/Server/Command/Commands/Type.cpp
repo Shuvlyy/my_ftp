@@ -5,7 +5,7 @@
 #include <format>
 
 bool
-ftp::server::commands::Type::isUsageValid
+ftp::server::command::Type::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -15,7 +15,7 @@ ftp::server::commands::Type::isUsageValid
 }
 
 void
-ftp::server::commands::Type::execute
+ftp::server::command::Type::execute
 (
     Server *,
     const std::vector<std::string> &,

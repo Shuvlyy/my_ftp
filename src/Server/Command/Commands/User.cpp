@@ -4,7 +4,7 @@
 #include "Common/Responses.hpp"
 
 bool
-ftp::server::commands::User::isUsageValid
+ftp::server::command::User::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -14,7 +14,7 @@ ftp::server::commands::User::isUsageValid
 }
 
 void
-ftp::server::commands::User::execute
+ftp::server::command::User::execute
 (
     Server *server,
     const std::vector<std::string> &commandArguments,

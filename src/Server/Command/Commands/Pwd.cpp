@@ -6,7 +6,7 @@
 #include <format>
 
 bool
-ftp::server::commands::Pwd::isUsageValid
+ftp::server::command::Pwd::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -16,7 +16,7 @@ ftp::server::commands::Pwd::isUsageValid
 }
 
 void
-ftp::server::commands::Pwd::execute
+ftp::server::command::Pwd::execute
 (
     Server *,
     const std::vector<std::string> &,

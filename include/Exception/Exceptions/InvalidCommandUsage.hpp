@@ -18,7 +18,7 @@ namespace ftp::exception
         {}
 
         explicit InvalidCommandUsage(
-            const server::commands::ICommand *command
+            const server::command::ICommand *command
         )
             : InvalidCommandUsage(
                 command->getCommandName(),

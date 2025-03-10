@@ -9,7 +9,7 @@
 #include <arpa/inet.h>
 
 bool
-ftp::server::commands::Pasv::isUsageValid
+ftp::server::command::Pasv::isUsageValid
 (
     const std::vector<std::string> &commandArguments
 )
@@ -35,7 +35,7 @@ parseIp
 }
 
 void
-ftp::server::commands::Pasv::execute
+ftp::server::command::Pasv::execute
 (
     Server *,
     const std::vector<std::string> &,
@@ -59,6 +59,10 @@ ftp::server::commands::Pasv::execute
         ipTokens.at(0), ipTokens.at(1), ipTokens.at(2), ipTokens.at(3),
         port / 256, port % 256
     ));
+
+    #ifdef DEBUG
+    clientSocket.send(std::to_string(port));
+    #endif
 
     dataSocket.acceptConnection();
 }
