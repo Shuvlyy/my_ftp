@@ -49,6 +49,6 @@ re: fclean
 	@ make all
 
 debug:
-	@ $(MAKE) CFLAGS="$(CFLAGS) -DDEBUG" re
+	@ $(MAKE) CFLAGS="$(CFLAGS) -g -DDEBUG" all
 
 -include $(DEP)

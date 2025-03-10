@@ -10,4 +10,3 @@ CFLAGS += -Wextra
 #CFLAGS += -Werror
 CFLAGS += -std=c++20
 CFLAGS += -iquote include
-CFLAGS += -g
