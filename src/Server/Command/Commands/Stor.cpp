@@ -33,7 +33,7 @@ ftp::server::commands::Stor::execute
         return;
     }
 
-    const int pid = fork();
+    const int pid = fourchette();
 
     if (pid < 0) {
         throw exception::StandardFunctionFail("fork");

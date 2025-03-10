@@ -1,5 +1,7 @@
 #pragma once
 
+#define fourchette  fork
+
 #include "Server/Socket/Socket.hpp"
 
 #include <string>
