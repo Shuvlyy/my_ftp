@@ -38,6 +38,10 @@ ftp::server::Session::login
         return false;
     }
 
+    if (this->_user->getUsername() == USER_UNKNOWN_NAME) {
+        return false;
+    }
+
     if (password == this->_user->getPassword()) {
         this->_isLoggedIn = true;
         this->_wd = std::string(this->_user->getDefaultCwd());

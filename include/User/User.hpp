@@ -2,6 +2,7 @@
 
 #define USER_ANONYMOUS_NAME     "Anonymous"
 #define USER_ANONYMOUS_PASSWORD ""
+#define USER_UNKNOWN_NAME       "{{$unkn0wn$}}"
 
 #include <string>
 

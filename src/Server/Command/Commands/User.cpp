@@ -28,21 +28,18 @@ ftp::server::commands::User::execute
         return;
     }
 
-    ftp::User *user = server->getSessionManager().getUserManager()
-        .getUser(commandArguments.at(0));
+    const std::string targetUsername = commandArguments.at(0);
 
-    if (user == nullptr) { // FIXME: According to the automated tests, you should just send 331? Just as if the user exists?
-        clientSocket.send(RES_NOT_LOGGED_IN);
-        return;
+    ftp::User *user = server->getSessionManager().getUserManager()
+        .getUser(targetUsername);
+
+    /* If user is not found, then put an inaccessible one. */
+    if (user == nullptr) {
+        user = server->getSessionManager().getUserManager()
+            .getUser(USER_UNKNOWN_NAME);
     }
 
     session.setUser(user);
-
-    // if (user->getPassword().empty()) {
-    //     session.login("");
-    //     clientSocket.send(RES_USER_LOGGED_IN);
-    //     return;
-    // }
 
     clientSocket.send(RES_USER_OK_NEED_PASSWORD);
 }

@@ -13,7 +13,7 @@ ftp::User::User
 )
     : _username(std::move(username)),
       _password(std::move(password)),
-      _defaultCwd(std::filesystem::canonical(defaultCwd).string())
+      _defaultCwd(defaultCwd.empty() ? "" : std::filesystem::canonical(defaultCwd).string())
 {}
 
 ftp::User::User
