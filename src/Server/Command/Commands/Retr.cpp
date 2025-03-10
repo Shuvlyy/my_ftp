@@ -22,7 +22,7 @@ ftp::server::command::Retr::isUsageValid
 }
 
 void
-ftp::server::command::Retr::startDownload
+ftp::server::command::Retr::startUpload
 (
     Session &session,
     const std::string &filepath
@@ -97,7 +97,7 @@ ftp::server::command::Retr::execute
         return;
     }
 
-    this->startDownload(session, filepath);
+    this->startUpload(session, filepath);
 
     session.getDataSocket().closeSocket();
 
