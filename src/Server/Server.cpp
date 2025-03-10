@@ -164,7 +164,7 @@ ftp::Server::handleClientRequest
     try {
         std::string command = clientSocket.receive();
 
-        command = Utilities::cleanString(command);
+        // command = Utilities::cleanString(command); // R.I.P :(
 
         if (command.empty()) {
             return;
