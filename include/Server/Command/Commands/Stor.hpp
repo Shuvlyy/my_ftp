@@ -37,6 +37,9 @@ namespace ftp::server::command
         {
             return "STOR [<pathname>]";
         }
+
+    private:
+        void startDownload(Session &session, const std::string &filepath) const;
     };
 
 }

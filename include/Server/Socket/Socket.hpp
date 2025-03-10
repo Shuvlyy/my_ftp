@@ -42,6 +42,13 @@ namespace ftp::server
         [[nodiscard]] std::string receive() const;
 
         /**
+         * Reads from the file descriptor and returns its content.
+         * Only reads with a size of BUFFER_SIZE.
+         * Specially made for data transfer (c.f. command::Stor::startDownload).
+         */
+        [[nodiscard]] std::string receiveBinary() const;
+
+        /**
          * Closes the socket: its file descriptor.
          */
         void closeSocket();

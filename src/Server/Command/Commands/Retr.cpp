@@ -35,7 +35,7 @@ ftp::server::command::Retr::startUpload
     std::ifstream file(filepath, std::ios::binary);
 
     if (!file.is_open()) {
-        controlSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise way?
+        controlSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise error message.
         return;
     }
 

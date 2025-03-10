@@ -78,7 +78,7 @@ ftp::server::Session::cwd
         throw exception::WdOutOfScope(absolutePath);
     }
 
-    if (chdir(absolutePath.c_str()) != 0) {
+    if (chdir(absolutePath.c_str()) != 0) { // TODO: Change with std::filesystem::current_path(const std::filesystem::path &).
         throw exception::StandardFunctionFail("chdir");
     }
 

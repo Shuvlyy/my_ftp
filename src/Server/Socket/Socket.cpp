@@ -105,6 +105,29 @@ ftp::server::Socket::receive
     return result;
 }
 
+std::string
+ftp::server::Socket::receiveBinary
+()
+    const
+{
+    if (this->_fd == -1) {
+        return "";
+    }
+
+    char buffer[BUFFER_SIZE];
+    const ssize_t bytesRead = read(this->_fd, buffer, BUFFER_SIZE);
+
+    if (bytesRead < 0) {
+        throw exception::StandardFunctionFail("read");
+    }
+
+    if (bytesRead == 0) {
+        return ""; // EOF, ignored for file transfers
+    }
+
+    return std::string(buffer, bytesRead);
+}
+
 void
 ftp::server::Socket::closeSocket
 ()

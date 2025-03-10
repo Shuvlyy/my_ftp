@@ -7,6 +7,7 @@
 #include "Exception/Exceptions/StandardFunctionFail.hpp"
 
 #include <filesystem>
+#include <fstream>
 
 bool
 ftp::server::command::Stor::isUsageValid
@@ -16,6 +17,43 @@ ftp::server::command::Stor::isUsageValid
     const
 {
     return commandArguments.size() == 1;
+}
+
+void
+ftp::server::command::Stor::startDownload
+(
+    Session &session,
+    const std::string &filepath
+)
+    const
+{
+    const Socket &controlSocket = session.getControlSocket();
+    const Socket &dataSocket = session.getDataSocket();
+
+    std::ofstream file(filepath, std::ios::binary | std::ios::trunc);
+
+    if (!file.is_open()) {
+        session.getControlSocket().send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise error message.
+        return;
+    }
+
+    controlSocket.send(RES_FILE_STATUS_OK);
+
+    std::string receivedData;
+
+    while (true) {
+        receivedData = dataSocket.receiveBinary();
+
+        if (receivedData.empty()) { // When EOF reached, exit loop.
+            break;
+        }
+
+        file.write(receivedData.c_str(), static_cast<std::streamsize>(receivedData.size()));
+    }
+
+    file.close();
+
+    controlSocket.send(RES_TRANSFER_COMPLETE);
 }
 
 void
@@ -33,6 +71,22 @@ ftp::server::command::Stor::execute
         return;
     }
 
+    /* FIXME: Code is not really clean... */
+
+    namespace fs = std::filesystem;
+
+    fs::path filepath = fs::weakly_canonical(fs::path(session.getWd()) / fs::path(commandArguments.at(0)));
+
+    if (is_directory(filepath)) {
+        clientSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise error message.
+        return;
+    }
+
+    if (!filepath.string().starts_with(session.getUser()->getDefaultCwd())) {
+        clientSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise error message.
+        return;
+    }
+
     const int pid = fourchette();
 
     if (pid < 0) {
@@ -43,42 +97,7 @@ ftp::server::command::Stor::execute
         return;
     }
 
-//    const std::string oldPath = session.getWd();
-//
-//    const std::string &path = commandArguments.size() == 1
-//        ? commandArguments.at(0)
-//        : session.getWd();
-//
-//    /* Entering the folder the user wants to list in */
-//    try {
-//        session.cwd(path);
-//    }
-//    catch (const exception::PathIsNotDir &) {
-//        clientSocket.send(RES_NOT_DIR);
-//        return;
-//    }
-//    catch (const exception::WdOutOfScope &) {
-//        clientSocket.send(RES_ACTION_NOT_TAKEN);
-//        return;
-//    }
-//    catch (const exception::IException &exception) {
-//        clientSocket.send(RES_UNKNOWN);
-//        std::cerr << exception;
-//        return;
-//    }
-//
-//    clientSocket.send(RES_FILE_STATUS_OK);
-//
-//    try {
-//        session.getDataSocket().send(Utilities::getDirContents(session.getWd()));
-//        clientSocket.send(RES_TRANSFER_COMPLETE);
-//    } catch (const exception::IException &exception) {
-//        clientSocket.send(RES_TRANSFER_ABORTED);
-//        std::cerr << exception;
-//    }
-//
-//    /* Going back to where the client was */
-//    session.cwd(oldPath);
+    this->startDownload(session, filepath);
 
     session.getDataSocket().closeSocket();
 
