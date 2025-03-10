@@ -137,5 +137,9 @@ ftp::Utilities::getDirContents
         output << " " << date << " " << time << " " << entry.path().filename() << std::endl;
     }
 
-    return output.str();
+    std::string res(output.str());
+
+    res.pop_back();
+
+    return res;
 }
