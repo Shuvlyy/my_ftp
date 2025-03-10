@@ -85,5 +85,5 @@ ftp::server::commands::List::execute
     session.getDataSocket().closeSocket();
     session.cwd(oldPath);
 
-    std::exit(0); // FIXME: error here rkjzhfioejofherog
+    exit(0);
 }
