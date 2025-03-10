@@ -31,7 +31,13 @@ ftp::server::session::Manager::closeSession
     const Socket &clientSocket
 )
 {
-    this->_sessions.erase(clientSocket.getFd());
+    int socketFd = clientSocket.getFd();
+    Session &session = this->_sessions.at(socketFd);
+
+    session.getControlSocket().closeSocket();
+    session.getDataSocket().closeSocket();
+
+    this->_sessions.erase(socketFd);
 }
 
 bool
