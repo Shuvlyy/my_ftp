@@ -1,6 +1,6 @@
 #pragma once
 
-#define USER_ANONYMOUS_NAME "Anonymous"
+#define USER_ANONYMOUS_NAME     "Anonymous"
 #define USER_ANONYMOUS_PASSWORD ""
 
 #include <string>
@@ -21,7 +21,7 @@ namespace ftp
         explicit User(
             std::string username,
             std::string password,
-            std::string defaultCwd
+            const std::string &defaultCwd
         );
 
         /**

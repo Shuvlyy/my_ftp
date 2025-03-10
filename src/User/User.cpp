@@ -1,18 +1,19 @@
 #include "User/User.hpp"
 
+#include "Utilities/Utilities.hpp"
+
 #include <filesystem>
-#include <iostream>
 #include <utility>
 
 ftp::User::User
 (
     std::string username,
     std::string password,
-    std::string defaultCwd
+    const std::string &defaultCwd
 )
     : _username(std::move(username)),
       _password(std::move(password)),
-      _defaultCwd(std::filesystem::weakly_canonical(std::move(defaultCwd)))
+      _defaultCwd(std::filesystem::canonical(defaultCwd).string())
 {}
 
 ftp::User::User

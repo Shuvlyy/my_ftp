@@ -2,6 +2,7 @@
 
 #include "Exception/Exceptions/PathIsNotDir.hpp"
 #include "Exception/Exceptions/WdOutOfScope.hpp"
+#include "Exception/Exceptions/FileNotFound.hpp"
 
 #include "Server/Server.hpp"
 
@@ -31,10 +32,20 @@ ftp::server::commands::Cwd::execute
         session.cwd(commandArguments.at(0));
         clientSocket.send(RES_FILE_ACTION_REQ);
     }
+    catch (exception::FileNotFound &exception) {
+        std::cerr << exception;
+        clientSocket.send(RES_ACTION_NOT_TAKEN); // TODO: Maybe a more specific error code?
+    }
     catch (exception::PathIsNotDir &exception) {
+        std::cerr << exception;
         clientSocket.send(RES_ACTION_NOT_TAKEN); // TODO: Maybe a more specific error code?
     }
     catch (exception::WdOutOfScope &exception) {
+        std::cerr << exception;
         clientSocket.send(RES_ACTION_NOT_TAKEN);
+    }
+    catch (exception::IException &exception) {
+        std::cerr << exception;
+        clientSocket.send(RES_UNKNOWN);
     }
 }

@@ -1,10 +1,10 @@
 #include "Server/Command/Commands/Dele.hpp"
 
-#include "Exception/Exceptions/WdOutOfScope.hpp"
-
 #include "Server/Server.hpp"
 
 #include "Common/Responses.hpp"
+
+#include "Utilities/Utilities.hpp"
 
 #include <filesystem>
 
@@ -31,16 +31,16 @@ ftp::server::commands::Dele::execute
     const std::string &path = commandArguments.at(0);
 
     /* FIXME: DUPLICATE FRAGMENT OF CODE (see Session::cwd) -------------------- */
-    const std::string absolutePath = std::filesystem::weakly_canonical(path);
+    const std::string absolutePath = Utilities::getAbsolutePath(session.getWd(), path);
 
     if (!absolutePath.starts_with(session.getUser()->getDefaultCwd())) {
-        clientSocket.send("out of scope (no permission)!!");
+        clientSocket.send(RES_ACTION_NOT_TAKEN); // TODO: More precise message pls
         return;
     }
     /* ------------------------------------------------------------------------- */
 
     if (std::remove(commandArguments.at(0).c_str()) == -1) {
-        clientSocket.send("hmmm probolem");
+        clientSocket.send(RES_UNKNOWN); // TODO: More precise message pls
         return;
     }
 

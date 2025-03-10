@@ -5,6 +5,8 @@
 #include "Exception/Exceptions/WdOutOfScope.hpp"
 #include "Exception/Exceptions/PathIsNotDir.hpp"
 
+#include "Utilities/Utilities.hpp"
+
 #include <filesystem>
 #include <unistd.h>
 
@@ -14,7 +16,7 @@ ftp::server::Session::Session
     User *user
 )
     : _controlSocket(Socket(fd)),
-      _dataSocket(DataSocket('J')),
+      _dataSocket(DataSocket('J')), // 'J' is magic value, has no impact.
       _user(user),
       _isLoggedIn(false)
 {}
@@ -58,9 +60,9 @@ ftp::server::Session::cwd
         throw exception::UserNotLoggedIn(this->_controlSocket.getFd());
     }
 
-    const std::string absolutePath = std::filesystem::weakly_canonical(path);
+    const std::string absolutePath = Utilities::getAbsolutePath(this->_wd, path);
 
-    if (path == absolutePath) {
+    if (this->getWd() == absolutePath) {
         return;
     }
 
