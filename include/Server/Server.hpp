@@ -26,7 +26,7 @@ namespace ftp
         void stop();
 
         void disconnectClient(
-            server::Socket &clientSocket
+            const server::Socket &clientSocket
         );
 
         [[nodiscard]] server::commands::Manager &getCommandManager();

@@ -62,7 +62,7 @@ ftp::server::commands::List::execute
         return;
     }
     catch (const exception::WdOutOfScope &) {
-        clientSocket.send(RES_FILE_NOT_FOUND);
+        clientSocket.send(RES_ACTION_NOT_TAKEN);
         return;
     }
     catch (const exception::IException &exception) {
@@ -74,7 +74,7 @@ ftp::server::commands::List::execute
     clientSocket.send(RES_FILE_STATUS_OK);
 
     try {
-        session.getDataSocket().send(Utilities::getDirContents(path));
+        session.getDataSocket().send(Utilities::getDirContents(session.getWd()));
         clientSocket.send(RES_TRANSFER_COMPLETE);
     } catch (const exception::IException &exception) {
         clientSocket.send(RES_TRANSFER_ABORTED);
@@ -85,5 +85,5 @@ ftp::server::commands::List::execute
     session.getDataSocket().closeSocket();
     session.cwd(oldPath);
 
-    std::exit(0);
+    std::exit(0); // FIXME: error here rkjzhfioejofherog
 }

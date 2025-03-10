@@ -23,6 +23,12 @@ ftp::Server::Server
       _sessionManager(server::session::Manager(path))
 {
     this->_serverSocket.startListening();
+
+    this->_pollFds.push_back({
+        .fd = this->_serverSocket.getFd(),
+        .events = POLLIN,
+        .revents = 0
+    });
 }
 
 ftp::Server::~Server
@@ -37,12 +43,6 @@ ftp::Server::start
 {
     this->_isRunning = true;
 
-    this->_pollFds.push_back({
-        .fd = this->_serverSocket.getFd(),
-        .events = POLLIN,
-        .revents = 0
-    });
-
     while (this->_isRunning) {
         const int ret = poll(
             this->_pollFds.data(),
@@ -54,7 +54,7 @@ ftp::Server::start
             throw exception::StandardFunctionFail("poll");
         }
 
-        for (auto &fd : this->_pollFds) {
+        for (const pollfd &fd : this->_pollFds) {
             server::Socket clientSocket(fd.fd);
 
             /*if (fd.revents & POLLHUP) {
@@ -184,8 +184,6 @@ ftp::Server::handleClientRequest
                 arguments,
                 clientSocket
             );
-
-            // TODO: don't forget this, you could eventually need it: clientSocket.send(RES_COMMAND_OK);
         }
         catch (exception::UnknownCommand &) {
             clientSocket.send(RES_SYNTAX_ERROR);
@@ -211,7 +209,7 @@ ftp::Server::handleClientRequest
 void
 ftp::Server::disconnectClient
 (
-    server::Socket &clientSocket
+    const server::Socket &clientSocket
 )
 {
     for (size_t k = 0; k < this->_pollFds.size(); k++) {
@@ -224,5 +222,4 @@ ftp::Server::disconnectClient
     }
 
     this->_sessionManager.closeSession(clientSocket);
-    clientSocket.closeSocket();
 }
