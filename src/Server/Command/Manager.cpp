@@ -14,6 +14,7 @@
 #include "Server/Command/Commands/Port.hpp"
 #include "Server/Command/Commands/Pasv.hpp"
 #include "Server/Command/Commands/List.hpp"
+#include "Server/Command/Commands/Type.hpp"
 
 #include "Exception/Exceptions/UnknownCommand.hpp"
 #include "Exception/Exceptions/InvalidCommandUsage.hpp"
@@ -131,6 +132,7 @@ ftp::server::commands::Manager::registerCommands
     this->registerCommand(std::make_unique<Port>());
     this->registerCommand(std::make_unique<Pasv>());
     this->registerCommand(std::make_unique<List>());
+    this->registerCommand(std::make_unique<Type>());
 }
 
 void
