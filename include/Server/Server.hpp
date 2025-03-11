@@ -4,6 +4,8 @@
 
 #include "Command/Manager.hpp"
 #include "Session/Manager.hpp"
+#include "Signal/Manager.hpp"
+#include "Logger/Logger.hpp"
 
 #include <string>
 #include <vector>
@@ -33,10 +35,12 @@ namespace ftp
         [[nodiscard]] server::session::Manager &getSessionManager();
 
     private:
-        bool _isRunning;
-        server::Socket _serverSocket;
+        Logger _logger;
         server::command::Manager _commandManager;
         server::session::Manager _sessionManager;
+        server::sig::Manager _signalManager;
+        bool _isRunning;
+        server::Socket _serverSocket;
         std::vector<pollfd> _pollFds;
 
         void terminate();

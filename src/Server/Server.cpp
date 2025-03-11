@@ -17,10 +17,11 @@ ftp::Server::Server
     const unsigned short port,
     const std::string &path
 )
-    : _isRunning(false),
-      _serverSocket(server::Socket(port)),
-      _commandManager(server::command::Manager(this)),
-      _sessionManager(server::session::Manager(path))
+    : _commandManager(server::command::Manager(this)),
+      _sessionManager(server::session::Manager(path)),
+      _signalManager(server::sig::Manager(this)),
+      _isRunning(false),
+      _serverSocket(server::Socket(port))
 {
     this->_serverSocket.startListening();
 
@@ -43,12 +44,16 @@ ftp::Server::start
 {
     this->_isRunning = true;
 
-    while (this->_isRunning) {
+    while (true) {
         const int ret = poll(
             this->_pollFds.data(),
             this->_pollFds.size(),
             POLL_TIMEOUT
         );
+
+        if (!this->_isRunning) {
+            break;
+        }
 
         if (ret < 0) {
             throw exception::StandardFunctionFail("poll");
@@ -85,6 +90,8 @@ ftp::Server::stop
 
     this->_isRunning = false;
     this->_serverSocket.closeSocket();
+
+    // for (this.)
 }
 
 ftp::server::command::Manager &

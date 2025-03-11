@@ -1,5 +1,7 @@
 #include "Server/Command/Manager.hpp"
+
 #include "Server/Server.hpp"
+
 #include "Server/Session/Session.hpp"
 
 #include "Server/Command/Commands/Help.hpp"
