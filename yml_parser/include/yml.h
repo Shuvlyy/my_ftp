@@ -21,7 +21,7 @@
 
     /* --------------------------------------------------------------------- */
 
-    #define MAX_STRING_LEN 1000
+    #define MAX_STRING_LEN 1024
     #define NESTING_SPACES 2
 
     #include <stddef.h>
@@ -48,11 +48,11 @@ typedef struct {
 } yml_parsing_t;
 
 /* YML */
-yml_t *yml_create_from_file(char *filepath);
-yml_t *yml_create_from_string(char *string);
-yml_node_t *yml_find_node_from_path(yml_t *yml, char *search);
+yml_t *yml_create_from_file(const char *filepath);
+yml_t *yml_create_from_string(const char *string);
+yml_node_t *yml_find_node_from_path(yml_t *yml, const char *search);
 void yml_dump(yml_t *yml);
-int yml_save(yml_t *yml, char *filepath);
+int yml_save(yml_t *yml, const char *filepath);
 void yml_destroy(yml_t *yml);
 
 /* Parsing */
@@ -62,22 +62,22 @@ void yml_parsing_create(yml_parsing_t *parsing, yml_t *yml);
 void yml_parsing_destroy(yml_parsing_t *parsing);
 
 /* Node */
-yml_node_t *yml_node_create(char *name, char *value);
+yml_node_t *yml_node_create(const char *name, const char *value);
 void yml_node_dump(yml_node_t *node, int depth);
 void yml_node_destroy(yml_node_t *node);
 
 /* Getters */
-int yml_get_int(yml_t *yml, char *path);
-char *yml_get_str(yml_t *yml, char *path);
-float yml_get_float(yml_t *yml, char *path);
-bool yml_get_bool(yml_t *yml, char *path);
-int yml_get_children_n(yml_t *yml, char *path);
-char **yml_get_list(yml_t *yml, char *path);
+int yml_get_int(yml_t *yml, const char *path);
+float yml_get_float(yml_t *yml, const char *path);
+char *yml_get_str(yml_t *yml, const char *path);
+bool yml_get_bool(yml_t *yml, const char *path);
+int yml_get_children_n(yml_t *yml, const char *path);
+char **yml_get_list(yml_t *yml, const char *path);
 
 /* Setters */
-int yml_set_float(yml_t *yml, char *path, float value);
-int yml_set_int(yml_t *yml, char *path, int value);
-int yml_set_str(yml_t *yml, char *path, char *value);
-int yml_set_bool(yml_t *yml, char *path, bool value);
+int yml_set_int(yml_t *yml, const char *path, int value);
+int yml_set_float(yml_t *yml, const char *path, float value);
+int yml_set_str(yml_t *yml, const char *path, const char *value);
+int yml_set_bool(yml_t *yml, const char *path, bool value);
 
 #endif /* YML_PARSER_H_ */

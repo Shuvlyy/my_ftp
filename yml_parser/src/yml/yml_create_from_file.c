@@ -18,9 +18,9 @@
  * @return  Created YML instance
  * @throws  NULL        Malloc failure or YML parsing fail.
  */
-yml_t *yml_create_from_file(char *filepath)
+yml_t *yml_create_from_file(const char *filepath)
 {
-    char *file_content = sh_read_file(filepath);
+    char *file_content = sh_read_file((char *) filepath);
 
     if (file_content == NULL)
         return sh_put_nerr(MALLOC_FAIL);

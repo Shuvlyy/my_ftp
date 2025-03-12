@@ -18,13 +18,13 @@
  * @return  Created YML instance
  * @throws  NULL    Malloc failure or YML parsing fail.
  */
-yml_t *yml_create_from_string(char *string)
+yml_t *yml_create_from_string(const char *string)
 {
     yml_t *yml = malloc(sizeof(yml_t));
 
     if (yml == NULL)
         return sh_put_nerr(MALLOC_FAIL);
-    yml->raw_content = string;
+    yml->raw_content = (char *) string;
     TAILQ_INIT(&yml->nodes);
     if (yml_parse(yml) == SH_EXIT_FAILURE)
         return yml_destroy(yml), sh_put_nerr(YML_PARSING_FAIL);

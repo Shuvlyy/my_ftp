@@ -19,7 +19,7 @@
  * @return  Default value (0)
  */
 static
-float print_err(char *err, char *path)
+float print_err(const char *err, const char *path)
 {
     printf("Error: \"%s\": %s\n", path, err);
     return .0f;
@@ -32,7 +32,7 @@ float print_err(char *err, char *path)
  * @param   path    Node path
  * @return  Fetched float
  */
-float yml_get_float(yml_t *yml, char *path)
+float yml_get_float(yml_t *yml, const char *path)
 {
     yml_node_t *node = yml_find_node_from_path(yml, path);
     char *v = NULL;

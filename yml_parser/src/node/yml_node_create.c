@@ -53,7 +53,7 @@ void set_is_list(yml_node_t *node)
  * @param   name    Node name
  * @param   value   Node value
  */
-yml_node_t *yml_node_create(char *name, char *value)
+yml_node_t *yml_node_create(const char *name, const char *value)
 {
     yml_node_t *node = malloc(sizeof(yml_node_t));
     char *k = sh_str_dup(name);

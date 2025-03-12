@@ -22,7 +22,7 @@
  * @return  Default value (SH_EXIT_FAILURE)
  */
 static
-int print_err(char *err, char *path)
+int print_err(const char *err, const char *path)
 {
     printf("Error: \"%s\": %s\n", path, err);
     return SH_EXIT_FAILURE;
@@ -56,7 +56,7 @@ int set_value(char **dest, int value)
  * @param   value   Value to set
  * @return  SH_EXIT_SUCCESS on success, otherwise SH_EXIT_FAILURE
  */
-int yml_set_int(yml_t *yml, char *path, int value)
+int yml_set_int(yml_t *yml, const char *path, int value)
 {
     yml_node_t *node = yml_find_node_from_path(yml, path);
     char **v = NULL;

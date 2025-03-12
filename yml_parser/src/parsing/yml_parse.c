@@ -116,7 +116,6 @@ void place_node(yml_node_t *node, size_t spaces, yml_parsing_t *parsing)
 /**
  * Line parsing.
  *
- * @param   needle              Where the parser is
  * @param   parsing             Parsing structure
  * @returns SH_EXIT_SUCCESS     OK
  * @returns SH_EXIT_FAILURE     Parsing failure

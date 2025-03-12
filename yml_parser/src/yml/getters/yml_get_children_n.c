@@ -17,7 +17,7 @@
  * @return  Default value (0)
  */
 static
-int print_err(char *err, char *path)
+int print_err(const char *err, const char *path)
 {
     printf("Error: \"%s\": %s\n", path, err);
     return -1;
@@ -30,7 +30,7 @@ int print_err(char *err, char *path)
  * @param   path    Node path
  * @return  Total amount of children of a node.
  */
-int yml_get_children_n(yml_t *yml, char *path)
+int yml_get_children_n(yml_t *yml, const char *path)
 {
     yml_node_t *node = yml_find_node_from_path(yml, path);
     int counter = 0;

@@ -17,7 +17,7 @@
  * @return  Default value (0)
  */
 static
-char *print_err(char *err, char *path)
+char *print_err(const char *err, const char *path)
 {
     printf("Error: \"%s\": %s\n", path, err);
     return NULL;
@@ -30,7 +30,7 @@ char *print_err(char *err, char *path)
  * @param   path    Node path
  * @return  Fetched string
  */
-char *yml_get_str(yml_t *yml, char *path)
+char *yml_get_str(yml_t *yml, const char *path)
 {
     yml_node_t *node = yml_find_node_from_path(yml, path);
     char *v = NULL;

@@ -50,7 +50,7 @@ void write_node(yml_node_t *node, FILE *file, int depth)
  * @param   filepath    File path of the new file
  * @return  SH_EXIT_SUCCESS on success, otherwise SH_EXIT_FAILURE
  */
-int yml_save(yml_t *yml, char *filepath)
+int yml_save(yml_t *yml, const char *filepath)
 {
     FILE *file = fopen(filepath, "w+");
     struct yml_node_s *node = NULL;
