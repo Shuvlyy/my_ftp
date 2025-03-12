@@ -7,7 +7,6 @@
 */
 
 #include <malloc.h>
-#include <stddef.h>
 #include "yml.h"
 
 /**

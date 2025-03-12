@@ -46,14 +46,19 @@ size_t get_result_size(const char *path, size_t n)
  */
 void yml_parsing_update_path(yml_parsing_t *parsing, size_t n)
 {
-    size_t result_size = 0;
+    size_t result_size = get_result_size(parsing->path, n);
+    char *buf;
 
-    result_size = get_result_size(parsing->path, n);
-    parsing->path = sh_realloc(
-        parsing->path, (result_size + 1) * sizeof(char));
     if (parsing->path == NULL) {
+        parsing->path = sh_calloc((result_size + 1) * sizeof(char), 0);
+        return;
+    }
+    buf = realloc(
+        parsing->path, (result_size + 1) * sizeof(char));
+    if (buf == NULL) {
         sh_put_verr(MALLOC_FAIL);
         return;
     }
+    parsing->path = buf;
     parsing->path[result_size] = '\0';
 }

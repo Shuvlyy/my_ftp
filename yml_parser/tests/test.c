@@ -10,6 +10,7 @@
 #include <stddef.h>
 #include "yml.h"
 #include "shuvlib/string.h"
+#include "shuvlib/array.h"
 
 static
 void test_ints(yml_t *yml)
@@ -63,6 +64,7 @@ void test_list(yml_t *yml)
     for (int k = 0; ltmp[k] != NULL; k++)
         printf("\t%d. \"%s\"\n", k, ltmp[k]);
     printf("\n");
+    sh_destroy_string_array(ltmp);
 }
 
 static

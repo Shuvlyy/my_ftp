@@ -9,6 +9,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <malloc.h>
+
 #include "yml.h"
 #include "shuvlib/string.h"
 #include "shuvlib/array.h"
@@ -85,6 +87,7 @@ char *concat_new_path(yml_node_t *node, yml_parsing_t *parsing)
     sprintf(buf, "%s%s%s", parsing->path,
         (parsing->path != NULL && parsing->path[0] != '\0') ? "." : "",
         node->name);
+    free(parsing->path);
     parsing->path = buf;
     return buf;
 }

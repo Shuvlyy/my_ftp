@@ -88,7 +88,7 @@ Just call the `yml_destroy(yml)` function, where `yml` is your yml instance.
 
 ## Time spent
 
-Around 28 hours.\
+Around 29 hours.\
 My wakatime statistics aren't representative of my real time
 spent, as it also counted my time spent on the MyRPG project in general.
 
