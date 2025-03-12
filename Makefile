@@ -54,4 +54,7 @@ libyml:
 debug:
 	@ $(MAKE) CFLAGS="$(CFLAGS) -DDEBUG" all
 
-.PHONY: all libyml clean fclean re tests_run
+bonus:
+	@ $(MAKE) CFLAGS="$(CFLAGS) -DBONUS" all
+
+.PHONY: all libyml clean fclean re tests_run bonus
