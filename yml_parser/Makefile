@@ -1,61 +1,67 @@
 ##
-## EPITECH PROJECT, 2025
+## EPITECH PROJECT, 2023
 ## MAKEFILE
 ## File description:
-## Makefile for my_ftp project
+## Makefile for the YML parser
 ##
 
-NAME = myftp
+NAME = libyml
 
-vpath %.cpp $(VPATH)
+vpath %.c $(VPATH)
 
 BUILD_DIR := .build
 MK_DIR := mk
-LIBYML_DIR := yml_parser
+LIB_DIR := shuvlib
 
 include $(MK_DIR)/sources.mk
 include $(MK_DIR)/flags.mk
 include $(MK_DIR)/colors.mk
 
-OBJ := $(SRC:%.cpp=$(BUILD_DIR)/%.o)
+OBJ := $(SRC:%.c=$(BUILD_DIR)/%.o)
 DEP := $(OBJ:%.o=$(BUILD_DIR)/%.d)
 
 .SUFFIXES: .d
 
-CC = g++
+CC = gcc
 
-all: libyml $(NAME)
+## -------------- ##
+##      Rules     ##
+## -------------- ##
+
+all: shuvlib $(NAME)
+
+shuvlib:
+	@ echo -e $(BOLD) $(YELLOW) "Building Shuvlib..." $(RESET)
+	@ make -s -C $(LIB_DIR)
 
 $(NAME): $(OBJ)
-	@ $(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) && \
+	@ ar rc $(NAME).a $(OBJ) && \
 	echo -e $(BOLD) $(BGT_GREEN) "Project successfully built!" $(RESET) || \
 	echo -e $(BOLD) $(RED) "Project failed to build." $(RESET)
 
-$(BUILD_DIR)/%.o: %.cpp
+$(BUILD_DIR)/%.o: %.c
 	@ mkdir -p $(dir $@)
 	@ $(CC) $(CFLAGS) -o $@ -c $< $(LDFLAGS) && \
 	echo -e $(BOLD) $(BGT_GREEN) "[OK]" $(RESET) $< || \
 	echo -e $(BOLD) $(RED) "[FAIL]" $(RESET) $<
 
 clean:
-	@ $(MAKE) -s -C $(LIBYML_DIR) clean && \
-	$(RM) $(OBJ) && \
-	$(RM) $(DEP) && \
+	@ $(RM) $(OBJ) && $(RM) $(DEP) && \
 	echo -e $(BOLD) $(BGT_GREEN) "Project successfully cleaned!" $(RESET) || \
 	echo -e $(BOLD) $(RED) "Project failed to clean." $(RESET)
+	@ make -s -C $(LIB_DIR) clean
 
 fclean: clean
 	@ $(RM) $(NAME)
 	@ $(RM) -r $(BUILD_DIR)
-	@ $(MAKE) -s -C $(LIBYML_DIR) fclean
+	@ make -s -C $(LIB_DIR) fclean
 
 re: fclean
-	@ $(MAKE) all
+	@ make -s -C $(LIB_DIR) re
+	@ make all
 
-libyml:
-	@ $(MAKE) -s -C $(LIBYML_DIR)
-
-debug:
-	@ $(MAKE) CFLAGS="$(CFLAGS) -DDEBUG" all
+tests_run: re
+	@ gcc -o test tests/test.c -I include -I shuvlib/include \
+		-L . -lyml -L shuvlib -lshuv
 
 -include $(DEP)
