@@ -2,7 +2,7 @@
 
 #include "Server/Signal/IHandler.hpp"
 
-namespace ftp::server::sig
+namespace ftp::server::signal
 {
 
     class Term final

@@ -5,12 +5,12 @@
 
 #include <csignal>
 
-namespace ftp::server::sig
+namespace ftp::server::signal
 {
     Manager* Manager::instance = nullptr;
 }
 
-ftp::server::sig::Manager::Manager
+ftp::server::signal::Manager::Manager
 (
     Server *parent
 )
@@ -23,14 +23,14 @@ ftp::server::sig::Manager::Manager
 }
 
 void
-ftp::server::sig::Manager::registerHandlers()
+ftp::server::signal::Manager::registerHandlers()
 {
     this->registerHandler(std::make_unique<Term>());
     this->registerHandler(std::make_unique<Int>());
 }
 
 void
-ftp::server::sig::Manager::registerHandler
+ftp::server::signal::Manager::registerHandler
 (
     std::unique_ptr<IHandler> handler
 )
@@ -42,11 +42,11 @@ ftp::server::sig::Manager::registerHandler
 }
 
 void
-ftp::server::sig::Manager::setupListener
+ftp::server::signal::Manager::setupListener
 ()
 {
     for (const auto &[signalNumber, handler] : this->_handlers) {
-        signal(
+        std::signal(
             signalNumber,
             [](const int signum) { Manager::dispatchHandler(signum); }
         );
@@ -54,7 +54,7 @@ ftp::server::sig::Manager::setupListener
 }
 
 void
-ftp::server::sig::Manager::dispatchHandler
+ftp::server::signal::Manager::dispatchHandler
 (
     const int signum
 )

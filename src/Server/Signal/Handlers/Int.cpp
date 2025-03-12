@@ -2,7 +2,7 @@
 #include "Server/Server.hpp"
 
 void
-ftp::server::sig::Int::handle
+ftp::server::signal::Int::handle
 (
     Server *server
 )

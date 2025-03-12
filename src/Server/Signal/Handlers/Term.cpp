@@ -2,7 +2,7 @@
 #include "Server/Server.hpp"
 
 void
-ftp::server::sig::Term::handle
+ftp::server::signal::Term::handle
 (
     Server *server
 )

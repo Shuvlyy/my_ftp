@@ -10,7 +10,7 @@ namespace ftp
     class Server;
 }
 
-namespace ftp::server::sig
+namespace ftp::server::signal
 {
 
     class Manager

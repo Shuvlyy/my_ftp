@@ -8,8 +8,6 @@
 #include "Exception/Exceptions/InvalidCommandUsage.hpp"
 #include "Exception/Exceptions/UserNotLoggedIn.hpp"
 
-#include "Utilities/Utilities.hpp"
-
 #include <netinet/in.h>
 
 ftp::Server::Server
@@ -17,9 +15,10 @@ ftp::Server::Server
     const unsigned short port,
     const std::string &path
 )
-    : _commandManager(server::command::Manager(this)),
+    : //_dashboard(nullptr),
+      _commandManager(server::command::Manager(this)),
       _sessionManager(server::session::Manager(path)),
-      _signalManager(server::sig::Manager(this)),
+      _signalManager(server::signal::Manager(this)),
       _isRunning(false),
       _serverSocket(server::Socket(port))
 {
@@ -45,6 +44,10 @@ ftp::Server::start
     this->_isRunning = true;
 
     while (true) {
+        // if (this->_dashboard != nullptr) {
+        //     this->_dashboard->update();
+        // }
+
         const int ret = poll(
             this->_pollFds.data(),
             this->_pollFds.size(),
@@ -62,6 +65,7 @@ ftp::Server::start
         for (const pollfd &fd : this->_pollFds) {
             server::Socket clientSocket(fd.fd);
 
+            /* Hmm, not really useful. */
             /*if (fd.revents & POLLHUP) {
                 this->disconnectClient(clientSocket, k);
                 continue;
@@ -89,9 +93,26 @@ ftp::Server::stop
     }
 
     this->_isRunning = false;
-    this->_serverSocket.closeSocket();
 
-    // for (this.)
+    this->_sessionManager.closeAllSessions();
+
+    this->_serverSocket.closeSocket();
+}
+
+// void
+// ftp::Server::setDashboardInstance
+// (
+//     Dashboard *dashboard
+// )
+// {
+//     this->_dashboard = dashboard;
+// }
+
+ftp::Logger &
+ftp::Server::getLogger
+()
+{
+    return this->_logger;
 }
 
 ftp::server::command::Manager &
@@ -106,6 +127,21 @@ ftp::Server::getSessionManager
 ()
 {
     return this->_sessionManager;
+}
+
+ftp::server::Socket &
+ftp::Server::getServerSocket
+()
+{
+    return this->_serverSocket;
+}
+
+bool
+ftp::Server::isRunning
+()
+    const
+{
+    return this->_isRunning;
 }
 
 void
