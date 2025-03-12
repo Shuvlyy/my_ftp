@@ -127,20 +127,16 @@ ftp::Utilities::getDirContents
         const ssize_t size = entryStat.st_size;
         const std::string date = getFileDate(&entryStat);
         const std::string time = getFileTime(&entryStat);
-
-        // output << mode << permissions << " " << links << " " << uidUsername << " " << gidUsername << " ";
-        // if (S_ISCHR(entryStat.st_mode)) {
-        //     output << minor << ", " << major;
-        // } else {
-        //     output << size;
-        // }
-
         std::string filename(entry.path().filename());
 
-        // filename.erase(filename.begin());
-        // filename.pop_back();
+        output << mode << permissions << " " << links << " " << uidUsername << " " << gidUsername << " ";
+        if (S_ISCHR(entryStat.st_mode)) {
+            output << minor << ", " << major;
+        } else {
+            output << size;
+        }
 
-        output << /*" " << date << " " << time << " " <<*/ filename << std::endl;
+        output << " " << date << " " << time << " " << filename << std::endl;
     }
 
     std::string res(output.str());
