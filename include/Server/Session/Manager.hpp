@@ -5,6 +5,7 @@
 #include "Server/Socket/Socket.hpp"
 #include "Server/Session/Session.hpp"
 
+#include <vector>
 #include <unordered_map>
 
 namespace ftp::server::session
@@ -25,14 +26,29 @@ namespace ftp::server::session
         /**
          * Closes an active session.
          *
+         * @param   socketFd    File descriptor of the socket of the session to close
+         * @param   session     Session to close
+         */
+        void closeSession(int socketFd, Session &session);
+
+        /**
+         * Closes an active session.
+         *
          * @param   clientSocket    Client's socket
          */
         void closeSession(const Socket &clientSocket);
 
         /**
+         * Closes all active sessions.
+         */
+        void closeAllSessions();
+
+        /**
          * @return  true if client's socket has an active session. Otherwise, false.
          */
         bool hasSession(const Socket &clientSocket) const;
+
+        std::vector<Session *> getSessions();
 
         /**
          * @return  Session associated with the socket

@@ -28,16 +28,35 @@ ftp::server::session::Manager::createSession
 void
 ftp::server::session::Manager::closeSession
 (
-    const Socket &clientSocket
+    const int socketFd,
+    Session &session
 )
 {
-    int socketFd = clientSocket.getFd();
-    Session &session = this->_sessions.at(socketFd);
-
     session.getControlSocket().closeSocket();
     session.getDataSocket().closeSocket();
 
     this->_sessions.erase(socketFd);
+}
+
+void
+ftp::server::session::Manager::closeSession
+(
+    const Socket &clientSocket
+)
+{
+    const int socketFd = clientSocket.getFd();
+    Session &session = this->_sessions.at(socketFd);
+
+    this->closeSession(socketFd, session);
+}
+
+void
+ftp::server::session::Manager::closeAllSessions
+()
+{
+    for (auto &[fd, session] : this->_sessions) {
+        this->closeSession(fd, session);
+    }
 }
 
 bool
@@ -48,6 +67,18 @@ ftp::server::session::Manager::hasSession
     const
 {
     return this->_sessions.contains(clientSocket.getFd());
+}
+
+std::vector<ftp::server::Session *>
+ftp::server::session::Manager::getSessions
+()
+{
+    std::vector<Session *> result;
+
+    for (auto &[_, session] : this->_sessions) {
+        result.push_back(&session);
+    }
+    return result;
 }
 
 ftp::server::Session &
