@@ -66,13 +66,6 @@ ftp::server::command::Stor::execute
 )
     const
 {
-    if (session.getDataSocket().getState() == DataSocket::DEADASS) {
-        clientSocket.send(RES_NO_DATA_SOCKET_OPENED);
-        return;
-    }
-
-    session.getDataSocket().acceptConnection();
-
     /* FIXME: Code is not really clean... */
 
     namespace fs = std::filesystem;
@@ -98,6 +91,13 @@ ftp::server::command::Stor::execute
     if (pid > 0) { // In parent, skip.
         return;
     }
+
+    if (session.getDataSocket().getState() == DataSocket::DEADASS) {
+        clientSocket.send(RES_NO_DATA_SOCKET_OPENED);
+        exit(0);
+    }
+
+    session.getDataSocket().acceptConnection();
 
     this->startDownload(session, filepath);
 

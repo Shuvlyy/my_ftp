@@ -62,13 +62,6 @@ ftp::server::command::Retr::execute
 )
     const
 {
-    if (session.getDataSocket().getState() == DataSocket::DEADASS) {
-        clientSocket.send(RES_NO_DATA_SOCKET_OPENED);
-        return;
-    }
-
-    session.getDataSocket().acceptConnection();
-
     std::string filepath;
 
     try {
@@ -98,6 +91,13 @@ ftp::server::command::Retr::execute
     if (pid > 0) { // In parent, skip.
         return;
     }
+
+    if (session.getDataSocket().getState() == DataSocket::DEADASS) {
+        clientSocket.send(RES_NO_DATA_SOCKET_OPENED);
+        exit(0);
+    }
+
+    session.getDataSocket().acceptConnection();
 
     this->startUpload(session, filepath);
 
