@@ -1,10 +1,21 @@
+# .gitignore for my_ftp project
+
+# IDE settings
 .idea
 .vscode
-.build
+
+# Build objects
 *.o
-myftp
+*.d
+*.a
+.build
+
+# Debug files
 vgcore*
 *.gc??
-*.out
-ftp_test
 *.log
+
+## Output files
+myftp
+ftp_test
+*.out
