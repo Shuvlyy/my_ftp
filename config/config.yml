@@ -1,0 +1,42 @@
+settings:
+  # If set to true, logs will be archived in a folder specified right below.
+  archiveLogs: true
+
+  # If `archiveLogs` is false, this line will be ignored.
+  archiveDir: logs/
+
+  # Minimum level a log must have in order to be logged.
+  # Can be DEBUG, INFO, COMMAND, WARN, ERROR, CRITICAL or FATAL.
+  #        (^ it's in ascendant order)
+  logLevel: DEBUG
+
+  # Maximum amount of simultaneous connections the server can handle.
+  maxClients: 192
+
+  # If set to true, will automatically register users that belongs to the group
+  # `myftp` in this ftp, with their respective home.
+  # No password though!
+  registerUsersInMyFtpGroup: true
+
+  # If set to true, Anonymous user will be created, with the <root> given in
+  # parameter (./myftp <port> <root>).
+  # WARNING (en français): Mettez ça à false et j'ai 0% à la moulie
+  #                        Donc euhhh, le faites pas svp 😁😁
+  allowAnonymousUser: false
+
+# If root is not defined, will be set at program's current path.
+# If password is not defined, then will be set to empty string (no password).
+# YES, password are stored without any hash. 2 lazy 4 that!!
+users:
+  - admin:
+    root: /
+    password: verydifficultpasswordmeow
+  - garance:
+    root: ftp_test/garance/
+    password: vaugier
+  - julien:
+    root: ftp_test/julien/
+    password: chassard
+  - miau:
+    root: /home/shuvly
+    password: 123456789
