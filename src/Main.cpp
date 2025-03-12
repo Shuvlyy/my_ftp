@@ -1,4 +1,5 @@
 #include "Server/Server.hpp"
+#include "Dashboard/Dashboard.hpp"
 
 #include "Exception/AException.hpp"
 
@@ -14,6 +15,14 @@ main
     char *argv[]
 )
 {
+    // const ftp::logger::Log log(
+    //     ftp::logger::Log::Level::COMMAND,
+    //     "192.168.1.40",
+    //     "admin",
+    //     "PASS admin",
+    //     "200 PASS okay."
+    // );
+
     try {
         const ftp::Parser parser(argc, argv);
 
@@ -21,7 +30,16 @@ main
             return SH_EXIT_SUCCESS;
         }
 
-        ftp::Server server(parser.getPort(), parser.getPath());
+        const std::string configFile = parser.getFlagValue("--config");
+
+        ftp::Server server(parser.getPort(), parser.getPath(), configFile);
+        // ftp::Dashboard dashboard(&server);
+
+        // dashboard.initialize();
+
+        // server.setDashboardInstance(&dashboard);
+
+        // server.getLogger().log(log);
 
         server.start();
     }

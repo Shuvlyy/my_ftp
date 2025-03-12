@@ -14,7 +14,7 @@ namespace ftp::server::session
     class Manager final
     {
     public:
-        explicit Manager(const std::string &anonPath);
+        explicit Manager(yml_t *config, const std::string &anonPath);
 
         /**
          * Creates a new session for a user.

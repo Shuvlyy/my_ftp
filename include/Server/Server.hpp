@@ -8,6 +8,8 @@
 #include "Logger/Logger.hpp"
 // #include "Dashboard/Dashboard.hpp"
 
+#include "yml.h"
+
 #include <string>
 #include <vector>
 
@@ -21,7 +23,8 @@ namespace ftp
     public:
         explicit Server(
             unsigned short port,
-            const std::string &path
+            const std::string &path,
+            const std::string &configPath = ""
         );
         ~Server();
 
@@ -38,9 +41,11 @@ namespace ftp
         [[nodiscard]] server::command::Manager &getCommandManager();
         [[nodiscard]] server::session::Manager &getSessionManager();
         [[nodiscard]] server::Socket &getServerSocket();
+        [[nodiscard]] yml_t *getConfig() const;
         [[nodiscard]] bool isRunning() const;
 
     private:
+        yml_t *_config;
         Logger _logger;
         // Dashboard *_dashboard;
         server::command::Manager _commandManager;

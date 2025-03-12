@@ -2,9 +2,10 @@
 
 ftp::server::session::Manager::Manager
 (
+    yml_t *config,
     const std::string &anonPath
 )
-    : _userManager(user::Manager(anonPath))
+    : _userManager(user::Manager(config, anonPath))
 {}
 
 void

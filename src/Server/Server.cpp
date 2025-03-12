@@ -7,21 +7,28 @@
 #include "Exception/Exceptions/UnknownCommand.hpp"
 #include "Exception/Exceptions/InvalidCommandUsage.hpp"
 #include "Exception/Exceptions/UserNotLoggedIn.hpp"
+#include "Exception/Exceptions/CouldNotOpenConfig.hpp"
 
 #include <netinet/in.h>
 
 ftp::Server::Server
 (
     const unsigned short port,
-    const std::string &path
+    const std::string &path,
+    const std::string &configPath
 )
     : //_dashboard(nullptr),
+      _config(yml_create_from_file(configPath.c_str())),
       _commandManager(server::command::Manager(this)),
-      _sessionManager(server::session::Manager(path)),
+      _sessionManager(server::session::Manager(this->_config, path)),
       _signalManager(server::signal::Manager(this)),
       _isRunning(false),
       _serverSocket(server::Socket(port))
 {
+    if (!configPath.empty() && this->_config == nullptr) {
+        throw exception::CouldNotOpenConfig();
+    }
+
     this->_serverSocket.startListening();
 
     this->_pollFds.push_back({
@@ -93,9 +100,7 @@ ftp::Server::stop
     }
 
     this->_isRunning = false;
-
     this->_sessionManager.closeAllSessions();
-
     this->_serverSocket.closeSocket();
 }
 
@@ -136,6 +141,14 @@ ftp::Server::getServerSocket
     return this->_serverSocket;
 }
 
+yml_t *
+ftp::Server::getConfig
+()
+    const
+{
+    return this->_config;
+}
+
 bool
 ftp::Server::isRunning
 ()
@@ -149,6 +162,7 @@ ftp::Server::terminate
 ()
 {
     this->stop();
+    yml_destroy(this->_config);
 }
 
 void

@@ -44,7 +44,7 @@ ftp::server::Session::login
 
     if (password == this->_user->getPassword()) {
         this->_isLoggedIn = true;
-        this->_wd = std::string(this->_user->getDefaultCwd());
+        this->_wd = std::string(this->_user->getDefaultWd());
     }
 
     return this->_isLoggedIn;
@@ -74,7 +74,7 @@ ftp::server::Session::cwd
         throw exception::PathIsNotDir(absolutePath);
     }
 
-    if (!absolutePath.starts_with(this->_user->getDefaultCwd())) {
+    if (!absolutePath.starts_with(this->_user->getDefaultWd())) {
         throw exception::WdOutOfScope(absolutePath);
     }
 

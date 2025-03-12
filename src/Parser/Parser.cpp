@@ -36,7 +36,12 @@ ftp::Parser::parse
     }
 
     if (this->_tokens.at(0)[0] != '-') {
+#ifdef BONUS
+        if (this->_tokens.size() < 2 || this->_tokens.size() > 4) {
+#endif
+#ifndef BONUS
         if (this->_tokens.size() != 2) {
+#endif
             throw exception::InvalidUsage();
         }
 
