@@ -30,9 +30,6 @@ SRC += memory/sh_memcpy.c \
 	memory/sh_memset.c \
 	memory/sh_calloc.c
 
-### GET ###
-SRC += get/sh_get_nbr.c
-
 ### FILE ###
 SRC += file/sh_read_file.c \
 	file/sh_get_file_size.c \

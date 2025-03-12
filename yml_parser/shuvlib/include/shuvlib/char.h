@@ -6,13 +6,18 @@
 ** Author: lysandre.boursette@epitech.eu
 */
 
-#ifndef CHAR_H_
-    #define CHAR_H_
+#pragma once
 
-    #include <stdbool.h>
+#include <stdbool.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 bool sh_is_alpha(char c);
 bool sh_is_numeric(char c);
 bool sh_is_alphanumeric(char c);
 
-#endif /* CHAR_H_ */
+#ifdef __cplusplus
+}
+#endif

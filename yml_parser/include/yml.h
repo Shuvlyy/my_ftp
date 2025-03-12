@@ -5,28 +5,27 @@
 ** Header for YML parser
 */
 
-#ifndef YML_PARSER_H_
-    #define YML_PARSER_H_
+#pragma once
 
-    /* ------------------------- Error messages ---------------------------- */
+/* ------------------------- Error messages ---------------------------- */
 
-    #define FILE_NOT_FOUND "File not found."
-    #define YML_CREATION_FAIL "YML creation failed."
-    #define YML_PARSING_FAIL "YML parsing failed."
-    #define YML_LINE_PARSING_FAIL "YML line parsing failed."
-    #define YML_WRONG_SYNTAX "YML line wrong syntax."
-    #define YML_NODE_NOT_FOUND "Node not found."
-    #define YML_EMPTY_VALUE "Empty value"
-    #define YML_INVALID_TYPE "Node type isn't valid"
+#define FILE_NOT_FOUND "File not found."
+#define YML_CREATION_FAIL "YML creation failed."
+#define YML_PARSING_FAIL "YML parsing failed."
+#define YML_LINE_PARSING_FAIL "YML line parsing failed."
+#define YML_WRONG_SYNTAX "YML line wrong syntax."
+#define YML_NODE_NOT_FOUND "Node not found."
+#define YML_EMPTY_VALUE "Empty value"
+#define YML_INVALID_TYPE "Node type isn't valid"
 
-    /* --------------------------------------------------------------------- */
+/* --------------------------------------------------------------------- */
 
-    #define MAX_STRING_LEN 1024
-    #define NESTING_SPACES 2
+#define MAX_STRING_LEN 1024
+#define NESTING_SPACES 2
 
-    #include <stddef.h>
-    #include <stdbool.h>
-    #include <sys/queue.h>
+#include <stddef.h>
+#include <stdbool.h>
+#include <sys/queue.h>
 
 typedef struct yml_node_s {
     char *name;
@@ -46,6 +45,10 @@ typedef struct {
     char *path;
     char *needle;
 } yml_parsing_t;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* YML */
 yml_t *yml_create_from_file(const char *filepath);
@@ -80,4 +83,6 @@ int yml_set_float(yml_t *yml, const char *path, float value);
 int yml_set_str(yml_t *yml, const char *path, const char *value);
 int yml_set_bool(yml_t *yml, const char *path, bool value);
 
-#endif /* YML_PARSER_H_ */
+#ifdef __cplusplus
+}
+#endif

@@ -6,11 +6,14 @@
 ** Author: lysandre.boursette@epitech.eu
 */
 
-#ifndef STRING_H_
-    #define STRING_H_
+#pragma once
 
-    #include <stdbool.h>
-    #include <unistd.h>
+#include <stdbool.h>
+#include <unistd.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 ssize_t sh_put_str(char const *str);
 size_t sh_str_len(char const *str);
@@ -29,4 +32,6 @@ char *sh_strstr(char *str, char *delim);
 bool sh_str_endswith(char *str, char *ends_with);
 bool sh_is_str_numeric(char *str, bool count_minuses, bool count_dots);
 
-#endif /* STRING_H_ */
+#ifdef __cplusplus
+}
+#endif

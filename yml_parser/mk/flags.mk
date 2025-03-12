@@ -9,8 +9,8 @@ CFLAGS += -Wall
 CFLAGS += -Wextra
 CFLAGS += -MMD -MP
 
-CFLAGS += -iquote ./include
-CFLAGS += -iquote ./shuvlib/include
+CFLAGS += -iquote include
+CFLAGS += -iquote shuvlib/include
 
-LDFLAGS := -L ./shuvlib
+LDFLAGS := -L shuvlib
 LDFLAGS += -lshuv

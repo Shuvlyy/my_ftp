@@ -36,8 +36,8 @@ shuvlib:
 
 $(NAME): $(OBJ)
 	@ ar rc $(NAME).a $(OBJ) && \
-	echo -e $(BOLD) $(BGT_GREEN) "Project successfully built!" $(RESET) || \
-	echo -e $(BOLD) $(RED) "Project failed to build." $(RESET)
+	echo -e $(BOLD) $(BGT_GREEN) "YAML library successfully built!" $(RESET) || \
+	echo -e $(BOLD) $(RED) "YAML library failed to build." $(RESET)
 
 $(BUILD_DIR)/%.o: %.c
 	@ mkdir -p $(dir $@)
@@ -47,8 +47,8 @@ $(BUILD_DIR)/%.o: %.c
 
 clean:
 	@ $(RM) $(OBJ) && $(RM) $(DEP) && \
-	echo -e $(BOLD) $(BGT_GREEN) "Project successfully cleaned!" $(RESET) || \
-	echo -e $(BOLD) $(RED) "Project failed to clean." $(RESET)
+	echo -e $(BOLD) $(BGT_GREEN) "YAML library successfully cleaned!" $(RESET) || \
+	echo -e $(BOLD) $(RED) "YAML library failed to clean." $(RESET)
 	@ make -s -C $(LIB_DIR) clean
 
 fclean: clean
@@ -63,5 +63,7 @@ re: fclean
 tests_run: re
 	@ gcc -o test tests/test.c -I include -I shuvlib/include \
 		-L . -lyml -L shuvlib -lshuv
+
+.PHONY: all shuvlib clean fclean re tests_run
 
 -include $(DEP)

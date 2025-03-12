@@ -9,6 +9,4 @@ CFLAGS += -Wall
 CFLAGS += -Wextra
 CFLAGS += -MMD -MP
 
-CFLAGS += -iquote ./include
-
-CFLAGS += -g # ! Only for debug.
+CFLAGS += -iquote include
