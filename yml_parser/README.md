@@ -23,14 +23,15 @@ char yml_content[] = "name: Lysandre\n"
                      "    index: 7\n"
                      "    name: July"
                      "  day: 3\n"
-                     "gpa: 3.20\n";
+                     "gpa: 3.20\n"
+                     "hasCramptes: false\n";
 
 yml_t *yml = yml_create_from_string(yml_content);
 ```
 
 ### 📰 Reading content (getters)
 
-For now, only `int`, `float` and strings (`char *`) are supported.
+For now, only `int`, `float`, `bool` and strings (`char *`) are supported.
 
 > [!TIP]
 > Every value is de facto stored as a string (`char *`).
@@ -39,8 +40,9 @@ For now, only `int`, `float` and strings (`char *`) are supported.
 yml *yml = ...; // Initialize your YML here
 
 int birth_year = yml_get_int(yml, "birth.year"); // 2006
-float gpa = yml_get_float(yml, "gpa"); // 3.53
+float gpa = yml_get_float(yml, "gpa"); // 3.20
 char *name = yml_get_str(yml, "name"); // "Lysandre"
+char *name = yml_get_str(yml, "hasCramptes"); // false
 
 /* Error demonstration */
 int month_name = yml_get_int(yml, "birth.month.name"); // "Error: "birth.month.name": Node type isn't valid"
@@ -67,7 +69,7 @@ yml *yml = ...; // Initialize your YML here
 yml_set_int(yml, "age", 19); // Soon!!
 yml_set_float(yml, "gpa", 4.0f);
 yml_set_str(yml, "name", "Jolina");
-yml_set_bool(yml, "person.hasCramptes", true);
+yml_set_bool(yml, "hasCramptes", true); // 😊
 ```
 
 ### 💾 Saving your modifications
