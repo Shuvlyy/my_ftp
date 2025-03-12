@@ -62,10 +62,12 @@ ftp::server::command::Retr::execute
 )
     const
 {
-    if (session.getDataSocket().getFd() == -1) {
+    if (session.getDataSocket().getState() == DataSocket::DEADASS) {
         clientSocket.send(RES_NO_DATA_SOCKET_OPENED);
         return;
     }
+
+    session.getDataSocket().acceptConnection();
 
     std::string filepath;
 

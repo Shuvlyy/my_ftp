@@ -42,6 +42,8 @@ namespace ftp::server
 
         void closeSocket();
 
+        [[nodiscard]] State getState() const;
+
     private:
         State _state;
     };

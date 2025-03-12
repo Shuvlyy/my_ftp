@@ -13,15 +13,6 @@ ftp::server::DataSocket::DataSocket
       _state(ACTIVE)
 {
     this->_address.sin_addr.s_addr = inet_addr(clientIp.c_str());
-
-    if (connect(
-        this->_fd,
-        reinterpret_cast<sockaddr *>(&this->_address),
-        sizeof(this->_address)
-    ) < 0) {
-        this->closeSocket();
-        throw exception::StandardFunctionFail("connect");
-    }
 }
 
 ftp::server::DataSocket::DataSocket
@@ -52,14 +43,26 @@ void
 ftp::server::DataSocket::acceptConnection
 ()
 {
-    const int newFd = accept(this->getFd(), nullptr, nullptr);
+    if (this->_state == PASSIVE) {
+        const int newFd = accept(this->getFd(), nullptr, nullptr);
 
-    if (newFd < 0) {
-        throw exception::StandardFunctionFail("accept");
+        if (newFd < 0) {
+            throw exception::StandardFunctionFail("accept");
+        }
+
+        this->closeSocket();
+        this->_fd = newFd;
     }
-
-    this->closeSocket();
-    this->_fd = newFd;
+    else if (this->_state == ACTIVE) {
+        if (connect(
+            this->_fd,
+            reinterpret_cast<sockaddr *>(&this->_address),
+            sizeof(this->_address)
+        ) < 0) {
+            this->closeSocket();
+            throw exception::StandardFunctionFail("connect");
+        }
+    }
 }
 
 void
@@ -68,4 +71,11 @@ ftp::server::DataSocket::closeSocket
 {
     this->_state = DEADASS;
     this->Socket::closeSocket();
+}
+
+ftp::server::DataSocket::State
+ftp::server::DataSocket::getState()
+    const
+{
+    return this->_state;
 }

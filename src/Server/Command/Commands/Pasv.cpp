@@ -63,6 +63,4 @@ ftp::server::command::Pasv::execute
     #ifdef DEBUG
     clientSocket.send(std::to_string(port));
     #endif
-
-    dataSocket.acceptConnection();
 }

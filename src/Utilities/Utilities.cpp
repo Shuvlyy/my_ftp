@@ -6,7 +6,6 @@
 #include <sstream>
 #include <filesystem>
 #include <unistd.h>
-#include <limits.h>
 
 int
 ftp::Utilities::stringToInt
