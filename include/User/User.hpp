@@ -17,29 +17,29 @@ namespace ftp
          *
          * @param   username    User name
          * @param   password    Password needed for connection
-         * @param   defaultCwd  Directory user will be put in at connection
+         * @param   defaultWd   Directory user will be put in at connection
          */
         explicit User(
             std::string username,
             std::string password,
-            const std::string &defaultCwd
+            const std::string &defaultWd
         );
 
         /**
          * Creates the default User: Anonymous.
          *
-         * @param   defaultCwd  Directory user will be put in at connection
+         * @param   defaultWd   Directory user will be put in at connection
          */
-        explicit User(const std::string &defaultCwd);
+        explicit User(const std::string &defaultWd);
         ~User() = default;
 
         [[nodiscard]] std::string getUsername() const;
         [[nodiscard]] std::string getPassword() const;
-        [[nodiscard]] std::string getDefaultCwd() const;
+        [[nodiscard]] std::string getDefaultWd() const;
 
     private:
         std::string _username, _password;
-        std::string _defaultCwd;
+        std::string _defaultWd;
     };
 
 }

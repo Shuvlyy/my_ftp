@@ -33,7 +33,7 @@ ftp::server::command::Dele::execute
     /* FIXME: DUPLICATE FRAGMENT OF CODE (see Session::cwd) -------------------- */
     const std::string absolutePath = Utilities::getAbsolutePath(session.getWd(), path);
 
-    if (!absolutePath.starts_with(session.getUser()->getDefaultCwd())) {
+    if (!absolutePath.starts_with(session.getUser()->getDefaultWd())) {
         clientSocket.send(RES_ACTION_NOT_TAKEN); // TODO: More precise message pls
         return;
     }

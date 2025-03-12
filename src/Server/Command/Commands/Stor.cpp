@@ -77,7 +77,7 @@ ftp::server::command::Stor::execute
         return;
     }
 
-    if (!filepath.string().starts_with(session.getUser()->getDefaultCwd())) {
+    if (!filepath.string().starts_with(session.getUser()->getDefaultWd())) {
         clientSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise error message.
         return;
     }

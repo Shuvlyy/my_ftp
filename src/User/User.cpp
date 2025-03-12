@@ -9,21 +9,21 @@ ftp::User::User
 (
     std::string username,
     std::string password,
-    const std::string &defaultCwd
+    const std::string &defaultWd
 )
     : _username(std::move(username)),
       _password(std::move(password)),
-      _defaultCwd(defaultCwd.empty() ? "" : std::filesystem::canonical(defaultCwd).string())
+      _defaultWd(defaultWd.empty() ? "" : std::filesystem::canonical(defaultWd).string())
 {}
 
 ftp::User::User
 (
-    const std::string &defaultCwd
+    const std::string &defaultWd
 )
     : User(
         USER_ANONYMOUS_NAME,
         USER_ANONYMOUS_PASSWORD,
-        defaultCwd
+        defaultWd
     )
 {}
 
@@ -44,9 +44,9 @@ ftp::User::getPassword
 }
 
 std::string
-ftp::User::getDefaultCwd
+ftp::User::getDefaultWd
 ()
 const
 {
-    return _defaultCwd;
+    return _defaultWd;
 }
