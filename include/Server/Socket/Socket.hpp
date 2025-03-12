@@ -2,7 +2,7 @@
 
 #define PROTOCOL_ANY    0
 #define BUFFER_SIZE     1024
-#define MAX_CLIENTS     64
+#define MAX_CLIENTS     192
 
 #include <string>
 #include <netinet/in.h>
