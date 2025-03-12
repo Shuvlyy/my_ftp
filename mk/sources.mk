@@ -14,7 +14,14 @@ SRC += src/Exception/AException.cpp
 SRC += src/Utilities/Utilities.cpp \
 	src/Utilities/DirContentFormatter.cpp
 
+SRC += src/Logger/Logger.cpp \
+	src/Logger/Log.cpp
+
 SRC += src/Parser/Parser.cpp
+
+SRC += src/Server/Signal/Manager.cpp \
+	src/Server/Signal/Handlers/Int.cpp \
+	src/Server/Signal/Handlers/Term.cpp
 
 SRC += src/User/User.cpp \
 	src/User/Manager.cpp
@@ -43,3 +50,8 @@ SRC += src/Server/Command/Manager.cpp \
 	src/Server/Command/Commands/Type.cpp \
 	src/Server/Command/Commands/Stor.cpp \
 	src/Server/Command/Commands/Retr.cpp
+
+#SRC += Dashboard/Dashboard.cpp \
+#	Dashboard/View/AView.cpp \
+#	Dashboard/View/Views/Main/Main.cpp \
+#	Dashboard/View/Views/LogViewer/LogViewer.cpp
