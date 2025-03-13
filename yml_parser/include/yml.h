@@ -1,31 +1,32 @@
 /*
-** EPITECH PROJECT, 2024
+** EPITECH PROJECT, 2025
 ** YML_PARSER_H_
 ** File description:
 ** Header for YML parser
 */
 
-#pragma once
+#ifndef YML_H_
+    #define YML_H_
 
-/* ------------------------- Error messages ---------------------------- */
+    /* ------------------------- Error messages ---------------------------- */
 
-#define FILE_NOT_FOUND "File not found."
-#define YML_CREATION_FAIL "YML creation failed."
-#define YML_PARSING_FAIL "YML parsing failed."
-#define YML_LINE_PARSING_FAIL "YML line parsing failed."
-#define YML_WRONG_SYNTAX "YML line wrong syntax."
-#define YML_NODE_NOT_FOUND "Node not found."
-#define YML_EMPTY_VALUE "Empty value"
-#define YML_INVALID_TYPE "Node type isn't valid"
+    #define FILE_NOT_FOUND "File not found."
+    #define YML_CREATION_FAIL "YML creation failed."
+    #define YML_PARSING_FAIL "YML parsing failed."
+    #define YML_LINE_PARSING_FAIL "YML line parsing failed."
+    #define YML_WRONG_SYNTAX "YML line wrong syntax."
+    #define YML_NODE_NOT_FOUND "Node not found."
+    #define YML_EMPTY_VALUE "Empty value"
+    #define YML_INVALID_TYPE "Node type isn't valid"
 
-/* --------------------------------------------------------------------- */
+    /* --------------------------------------------------------------------- */
 
-#define MAX_STRING_LEN 1024
-#define NESTING_SPACES 2
+    #define MAX_STRING_LEN 1024
+    #define NESTING_SPACES 2
 
-#include <stddef.h>
-#include <stdbool.h>
-#include <sys/queue.h>
+    #include <stddef.h>
+    #include <stdbool.h>
+    #include <sys/queue.h>
 
 typedef struct yml_node_s {
     char *name;
@@ -50,39 +51,41 @@ typedef struct {
 extern "C" {
 #endif
 
-/* YML */
-yml_t *yml_create_from_file(const char *filepath);
-yml_t *yml_create_from_string(const char *string);
-yml_node_t *yml_find_node_from_path(yml_t *yml, const char *search);
-void yml_dump(yml_t *yml);
-int yml_save(yml_t *yml, const char *filepath);
-void yml_destroy(yml_t *yml);
+    /* YML */
+    yml_t *yml_create_from_file(const char *filepath);
+    yml_t *yml_create_from_string(const char *string);
+    yml_node_t *yml_find_node_from_path(yml_t *yml, const char *search);
+    void yml_dump(yml_t *yml);
+    int yml_save(yml_t *yml, const char *filepath);
+    void yml_destroy(yml_t *yml);
 
-/* Parsing */
-int yml_parse(yml_t *yml);
-void yml_parsing_update_path(yml_parsing_t *parsing, size_t n);
-void yml_parsing_create(yml_parsing_t *parsing, yml_t *yml);
-void yml_parsing_destroy(yml_parsing_t *parsing);
+    /* Parsing */
+    int yml_parse(yml_t *yml);
+    void yml_parsing_update_path(yml_parsing_t *parsing, size_t n);
+    void yml_parsing_create(yml_parsing_t *parsing, yml_t *yml);
+    void yml_parsing_destroy(yml_parsing_t *parsing);
 
-/* Node */
-yml_node_t *yml_node_create(const char *name, const char *value);
-void yml_node_dump(yml_node_t *node, int depth);
-void yml_node_destroy(yml_node_t *node);
+    /* Node */
+    yml_node_t *yml_node_create(const char *name, const char *value);
+    void yml_node_dump(yml_node_t *node, int depth);
+    void yml_node_destroy(yml_node_t *node);
 
-/* Getters */
-int yml_get_int(yml_t *yml, const char *path);
-float yml_get_float(yml_t *yml, const char *path);
-char *yml_get_str(yml_t *yml, const char *path);
-bool yml_get_bool(yml_t *yml, const char *path);
-int yml_get_children_n(yml_t *yml, const char *path);
-char **yml_get_list(yml_t *yml, const char *path);
+    /* Getters */
+    int yml_get_int(yml_t *yml, const char *path);
+    float yml_get_float(yml_t *yml, const char *path);
+    char *yml_get_str(yml_t *yml, const char *path);
+    bool yml_get_bool(yml_t *yml, const char *path);
+    int yml_get_children_n(yml_t *yml, const char *path);
+    char **yml_get_list(yml_t *yml, const char *path);
 
-/* Setters */
-int yml_set_int(yml_t *yml, const char *path, int value);
-int yml_set_float(yml_t *yml, const char *path, float value);
-int yml_set_str(yml_t *yml, const char *path, const char *value);
-int yml_set_bool(yml_t *yml, const char *path, bool value);
+    /* Setters */
+    int yml_set_int(yml_t *yml, const char *path, int value);
+    int yml_set_float(yml_t *yml, const char *path, float value);
+    int yml_set_str(yml_t *yml, const char *path, const char *value);
+    int yml_set_bool(yml_t *yml, const char *path, bool value);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif

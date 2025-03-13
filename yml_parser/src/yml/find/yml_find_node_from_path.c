@@ -38,7 +38,10 @@ yml_node_t *get_node_by_name_root(struct yml_list_s *nodes, const char *search)
  * @param   search  Search path
  */
 static
-yml_node_t *get_node_by_name_node(struct yml_node_list_s *nodes, const char *search)
+yml_node_t *get_node_by_name_node(
+    struct yml_node_list_s *nodes,
+    const char *search
+)
 {
     struct yml_node_s *needle = NULL;
 

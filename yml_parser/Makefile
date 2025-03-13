@@ -31,13 +31,13 @@ CC = gcc
 all: shuvlib $(NAME)
 
 shuvlib:
-	@ echo -e $(BOLD) $(YELLOW) "Building Shuvlib..." $(RESET)
+	@ echo -e $(YELLOW) "Building Shuvlib..." $(RESET)
 	@ make -s -C $(LIB_DIR)
 
 $(NAME): $(OBJ)
 	@ ar rc $(NAME).a $(OBJ) && \
-	echo -e $(BOLD) $(BGT_GREEN) "YAML library successfully built!" $(RESET) || \
-	echo -e $(BOLD) $(RED) "YAML library failed to build." $(RESET)
+	echo -e $(BGT_GREEN) "YAML library successfully built!" $(RESET) || \
+	echo -e $(RED) "YAML library failed to build." $(RESET)
 
 $(BUILD_DIR)/%.o: %.c
 	@ mkdir -p $(dir $@)
@@ -47,17 +47,18 @@ $(BUILD_DIR)/%.o: %.c
 
 clean:
 	@ $(RM) $(OBJ) && $(RM) $(DEP) && \
-	echo -e $(BOLD) $(BGT_GREEN) "YAML library successfully cleaned!" $(RESET) || \
-	echo -e $(BOLD) $(RED) "YAML library failed to clean." $(RESET)
+	echo -e $(BGT_GREEN) "YAML library successfully cleaned!" $(RESET) || \
+	echo -e $(RED) "YAML library failed to clean." $(RESET)
 	@ make -s -C $(LIB_DIR) clean
 
 fclean: clean
-	@ $(RM) $(NAME)
+	@ $(RM) $(NAME).a
 	@ $(RM) -r $(BUILD_DIR)
+	@ $(RM) test
 	@ make -s -C $(LIB_DIR) fclean
 
 re: fclean
-	@ make -s -C $(LIB_DIR) re
+	@ make -s -C $(LIB_DIR) fclean
 	@ make all
 
 tests_run: re

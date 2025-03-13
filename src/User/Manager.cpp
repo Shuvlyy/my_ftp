@@ -1,6 +1,6 @@
 #include "User/Manager.hpp"
 
-#include "../../yml_parser/shuvlib/include/shuvlib/array.h"
+#include "shuvlib/array.h"
 
 ftp::user::Manager::Manager
 (

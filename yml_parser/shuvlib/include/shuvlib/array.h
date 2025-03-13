@@ -6,17 +6,20 @@
 ** Author: lysandre.boursette@epitech.eu
 */
 
-#pragma once
+#ifndef ARRAY_H_
+    #define ARRAY_H_
 
-#include <stddef.h>
+    #include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-size_t sh_array_len(void **array);
-void sh_destroy_string_array(char **array);
+    size_t sh_array_len(void **array);
+    void sh_destroy_string_array(char **array);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
