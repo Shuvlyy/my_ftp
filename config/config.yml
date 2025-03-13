@@ -22,7 +22,7 @@ settings:
   # parameter (./myftp <port> <root>).
   # WARNING (en français): Mettez ça à false et j'ai 0% à la moulie
   #                        Donc euhhh, le faites pas svp 😁😁
-  allowAnonymousUser: false
+  allowAnonymousUser: true
 
 # If root is not defined, will be set at program's current path.
 # If password is not defined, then will be set to empty string (no password).
