@@ -3,6 +3,7 @@
 #include "Utilities/Utilities.hpp"
 
 #include <filesystem>
+#include <iostream>
 #include <utility>
 
 ftp::User::User
@@ -12,9 +13,19 @@ ftp::User::User
     const std::string &defaultWd
 )
     : _username(std::move(username)),
-      _password(std::move(password)),
-      _defaultWd(defaultWd.empty() ? "" : std::filesystem::canonical(defaultWd).string())
-{}
+      _password(std::move(password))
+{
+    if (!defaultWd.empty()) {
+        try {
+            this->_defaultWd = std::filesystem::canonical(defaultWd).string();
+        }
+        catch (const std::exception &) {
+            std::cerr << "Warning while creating user \"" << this->_username << "\":" << std::endl;
+            std::cerr << "Could not open folder \"" << defaultWd << "\". Setting root to current path." << std::endl;
+            this->_defaultWd = std::filesystem::current_path();
+        }
+    }
+}
 
 ftp::User::User
 (
