@@ -108,6 +108,10 @@ ftp::Utilities::getDirContents
     const std::string &filepath
 )
 {
+    if (std::filesystem::is_empty(filepath)) {
+        return "";
+    }
+
     std::ostringstream output;
 
     for (const auto &entry : std::filesystem::directory_iterator(filepath)) {
