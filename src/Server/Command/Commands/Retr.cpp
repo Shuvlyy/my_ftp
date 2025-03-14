@@ -44,7 +44,7 @@ ftp::server::command::Retr::startUpload
     char buffer[BUFFER_SIZE];
 
     while (file.read(buffer, sizeof(buffer)) || file.gcount() > 0) {
-        dataSocket.send(std::string(buffer, file.gcount()));
+        dataSocket.send(std::string(buffer, file.gcount()), false);
     }
 
     file.close();

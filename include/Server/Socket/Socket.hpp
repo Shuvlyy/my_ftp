@@ -33,9 +33,10 @@ namespace ftp::server
         /**
          * Writes the given string into the file descriptor.
          *
-         * @param   data    Data to write
+         * @param   data        Data to write
+         * @param   withCrlf    If set to true, will append a CRLF at the end of the sent packet.
          */
-        void send(const std::string &data) const;
+        void send(const std::string &data, bool withCrlf = true) const;
 
         /**
          * Reads from the file descriptor and returns its content.

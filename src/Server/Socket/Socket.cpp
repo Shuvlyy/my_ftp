@@ -46,7 +46,8 @@ ftp::server::Socket::Socket
 void
 ftp::server::Socket::send
 (
-    const std::string &data
+    const std::string &data,
+    const bool withCrlf
 )
     const
 {
@@ -54,7 +55,11 @@ ftp::server::Socket::send
         return;
     }
 
-    const std::string dataToSend(data + CRLF);
+    std::string dataToSend(data);
+
+    if (withCrlf) {
+        dataToSend += CRLF;
+    }
 
     const ssize_t bytesWritten = write(
         this->_fd,
