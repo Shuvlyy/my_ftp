@@ -26,7 +26,7 @@ parseMode
             return format[k];
         }
     }
-    return '-'; // TODO: Maybe return '?' instead?
+    return '-'; // Maybe return '?' instead?
 }
 
 static std::string

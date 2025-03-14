@@ -1,5 +1,7 @@
 #include "Server/Session/Manager.hpp"
 
+#include "Exception/Exceptions/UserNotRegistered.hpp"
+
 ftp::server::session::Manager::Manager
 (
     yml_t *config,
@@ -114,9 +116,8 @@ ftp::server::session::Manager::setUser
     Session &session = this->getSession(clientSocket);
     User *user = this->getUserManager().getUser(username);
 
-    if (user == nullptr) {
-        // TODO: Throw exception (usernotfound)
-        return;
+    if (user == nullptr) { // Should never be called but, just in case.
+        throw exception::UserNotRegistered(username);
     }
 
     session.setUser(user);
