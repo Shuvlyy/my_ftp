@@ -1,7 +1,5 @@
 #include "Server/Session/Manager.hpp"
 
-#include <iostream>
-
 ftp::server::session::Manager::Manager
 (
     yml_t *config,

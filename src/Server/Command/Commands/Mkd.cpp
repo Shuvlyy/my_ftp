@@ -34,7 +34,6 @@ ftp::server::command::Mkd::execute
     std::string absolutePath;
 
     try {
-        // absolutePath = Utilities::getAbsolutePath(session.getWd(), path);
         absolutePath = weakly_canonical(fs::path(session.getWd()) / fs::path(commandArguments.at(0)));
     }
     catch (const fs::filesystem_error &) {

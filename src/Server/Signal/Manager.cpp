@@ -1,5 +1,6 @@
 #include "Server/Server.hpp"
 #include "Server/Signal/Manager.hpp"
+
 #include "Server/Signal/Handlers/Term.hpp"
 #include "Server/Signal/Handlers/Int.hpp"
 

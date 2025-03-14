@@ -30,6 +30,7 @@ namespace ftp
 
         void start();
         void stop();
+        void terminate();
 
         void disconnectClient(
             const server::Socket &clientSocket
@@ -57,7 +58,6 @@ namespace ftp
         server::Socket _serverSocket;
         std::vector<pollfd> _pollFds;
 
-        void terminate();
         void handleNewConnection();
         void handleClientRequest(server::Socket &clientSocket);
     };
