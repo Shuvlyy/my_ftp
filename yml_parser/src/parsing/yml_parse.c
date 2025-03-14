@@ -96,6 +96,7 @@ char *concat_new_path(yml_node_t *node, yml_parsing_t *parsing)
  * Places the node in the right context.
  *
  * @param   node        Node to place
+ * @param   spaces      Number of spaces to put (indentation level)
  * @param   parsing     Parsing structure
  */
 static

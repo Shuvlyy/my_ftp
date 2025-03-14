@@ -15,9 +15,9 @@
  * Writes the content of a node in a file, with the
  * right indentation.
  *
- * @param   node    Node
- * @param   file    File
- * @param   depth   Depth
+ * @param   node    Node to write
+ * @param   file    File to write the node in
+ * @param   depth   Indentation depth
  */
 static
 void write_node(yml_node_t *node, FILE *file, int depth)
@@ -42,7 +42,7 @@ void write_node(yml_node_t *node, FILE *file, int depth)
 
 /**
  * Saves the current state of a YML instance in a file.
- * If the file doesn't exists, the file is created. Otherwise, the
+ * If the file doesn't exist, the file is created. Otherwise, the
  * file is overwritten.
  * NOTE: Comments aren't kept.
  *
