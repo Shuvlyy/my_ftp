@@ -28,9 +28,9 @@ CC = gcc
 ##      Rules     ##
 ## -------------- ##
 
-all: shuvlib $(NAME)
+all: libshuv $(NAME)
 
-shuvlib:
+libshuv:
 	@ echo -e $(YELLOW) "Building Shuvlib..." $(RESET)
 	@ make -s -C $(LIB_DIR)
 
@@ -65,6 +65,6 @@ tests_run: re
 	@ gcc -o test tests/test.c -I include -I shuvlib/include \
 		-L . -lyml -L shuvlib -lshuv
 
-.PHONY: all shuvlib clean fclean re tests_run
+.PHONY: all libshuv clean fclean re tests_run
 
 -include $(DEP)
