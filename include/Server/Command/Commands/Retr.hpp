@@ -39,7 +39,10 @@ namespace ftp::server::command
         }
 
     private:
-        void startUpload(Session &session, const std::string &filepath) const;
+        static void startUpload(
+            Session &session,
+            const std::string &filepath
+        );
     };
 
 }

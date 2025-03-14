@@ -27,7 +27,6 @@ ftp::server::command::Retr::startUpload
     Session &session,
     const std::string &filepath
 )
-    const
 {
     const Socket &controlSocket = session.getControlSocket();
     const Socket &dataSocket = session.getDataSocket();
@@ -99,7 +98,7 @@ ftp::server::command::Retr::execute
 
     session.getDataSocket().acceptConnection();
 
-    this->startUpload(session, filepath);
+    startUpload(session, filepath);
 
     session.getDataSocket().closeSocket();
 

@@ -25,7 +25,6 @@ ftp::server::command::Stor::startDownload
     Session &session,
     const std::string &filepath
 )
-    const
 {
     const Socket &controlSocket = session.getControlSocket();
     const Socket &dataSocket = session.getDataSocket();
@@ -70,7 +69,7 @@ ftp::server::command::Stor::execute
 
     namespace fs = std::filesystem;
 
-    fs::path filepath = weakly_canonical(fs::path(session.getWd()) / fs::path(commandArguments.at(0)));
+    const fs::path filepath = weakly_canonical(fs::path(session.getWd()) / fs::path(commandArguments.at(0)));
 
     if (is_directory(filepath)) {
         clientSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise error message.
@@ -99,7 +98,7 @@ ftp::server::command::Stor::execute
 
     session.getDataSocket().acceptConnection();
 
-    this->startDownload(session, filepath);
+    startDownload(session, filepath);
 
     session.getDataSocket().closeSocket();
 

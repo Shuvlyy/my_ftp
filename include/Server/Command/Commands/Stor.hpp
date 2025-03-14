@@ -39,7 +39,10 @@ namespace ftp::server::command
         }
 
     private:
-        void startDownload(Session &session, const std::string &filepath) const;
+        static void startDownload(
+            Session &session,
+            const std::string &filepath
+        );
     };
 
 }
