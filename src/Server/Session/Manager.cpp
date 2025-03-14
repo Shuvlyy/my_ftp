@@ -1,5 +1,7 @@
 #include "Server/Session/Manager.hpp"
 
+#include <iostream>
+
 ftp::server::session::Manager::Manager
 (
     yml_t *config,
@@ -35,7 +37,6 @@ ftp::server::session::Manager::closeSession
 {
     session.getControlSocket().closeSocket();
     session.getDataSocket().closeSocket();
-
     this->_sessions.erase(socketFd);
 }
 
@@ -56,8 +57,10 @@ ftp::server::session::Manager::closeAllSessions
 ()
 {
     for (auto &[fd, session] : this->_sessions) {
-        this->closeSession(fd, session);
+        session.getDataSocket().closeSocket();
+        session.getControlSocket().closeSocket();
     }
+    this->_sessions.clear();
 }
 
 bool
