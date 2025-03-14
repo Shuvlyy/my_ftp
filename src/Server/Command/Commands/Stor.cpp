@@ -70,7 +70,7 @@ ftp::server::command::Stor::execute
 
     namespace fs = std::filesystem;
 
-    fs::path filepath = fs::weakly_canonical(fs::path(session.getWd()) / fs::path(commandArguments.at(0)));
+    fs::path filepath = weakly_canonical(fs::path(session.getWd()) / fs::path(commandArguments.at(0)));
 
     if (is_directory(filepath)) {
         clientSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe a more precise error message.

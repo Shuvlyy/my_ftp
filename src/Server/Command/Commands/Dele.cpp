@@ -28,21 +28,28 @@ ftp::server::command::Dele::execute
 )
     const
 {
+    namespace fs = std::filesystem;
+
     const std::string &path = commandArguments.at(0);
 
-    /* FIXME: DUPLICATE FRAGMENT OF CODE (see Session::cwd) -------------------- */
     const std::string absolutePath = Utilities::getAbsolutePath(session.getWd(), path);
 
     if (!absolutePath.starts_with(session.getUser()->getDefaultWd())) {
         clientSocket.send(RES_ACTION_NOT_TAKEN); // TODO: More precise message pls
         return;
     }
-    /* ------------------------------------------------------------------------- */
 
-    if (std::remove(commandArguments.at(0).c_str()) == -1) {
-        clientSocket.send(RES_UNKNOWN); // TODO: More precise message pls
+    if (!fs::exists(absolutePath) || fs::is_directory(absolutePath)) {
+        clientSocket.send(RES_ACTION_NOT_TAKEN); // TODO: More precise message pls
         return;
     }
 
-    clientSocket.send(RES_FILE_ACTION_REQ);
+    try {
+        fs::remove(commandArguments.at(0));
+        clientSocket.send(RES_FILE_ACTION_REQ);
+    }
+    catch (const std::filesystem::filesystem_error &exception) {
+        clientSocket.send(RES_UNKNOWN);
+        std::cerr << exception.what() << std::endl;
+    }
 }

@@ -32,7 +32,7 @@ ftp::server::command::Cdup::execute
         session.cwd("..");
         clientSocket.send(std::format(RES_COMMAND_OK, this->getCommandName()));
     }
-    catch (exception::WdOutOfScope &exception) {
-        clientSocket.send("out of scope (no permission)!!");
+    catch (exception::WdOutOfScope &) {
+        clientSocket.send(RES_ACTION_NOT_TAKEN);
     }
 }
