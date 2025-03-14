@@ -233,7 +233,7 @@ ftp::Server::handleClientRequest
 )
 {
     try {
-        std::string command = clientSocket.receive();
+        const std::string command = clientSocket.receive();
 
         // command = Utilities::cleanString(command); // R.I.P :(
 

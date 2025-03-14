@@ -28,7 +28,7 @@ ftp::server::command::User::execute
         return;
     }
 
-    const std::string targetUsername = commandArguments.at(0);
+    const std::string &targetUsername = commandArguments.at(0);
 
     ftp::User *user = server->getSessionManager().getUserManager()
         .getUser(targetUsername);

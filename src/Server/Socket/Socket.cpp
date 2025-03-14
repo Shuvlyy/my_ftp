@@ -126,7 +126,10 @@ ftp::server::Socket::receiveBinary
         return ""; // EOF, ignored for file transfers
     }
 
-    return std::string(buffer, bytesRead);
+    return {
+        buffer,
+        static_cast<std::string::size_type>(bytesRead)
+    }; // Different way to initialize a string
 }
 
 void

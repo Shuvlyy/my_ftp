@@ -50,7 +50,7 @@ ftp::Utilities::cleanString
     }
 
     const size_t last = str.find_last_not_of(" \t");
-    return str.substr(first, (last - first + 1));
+    return str.substr(first, last - first + 1);
 }
 
 std::string

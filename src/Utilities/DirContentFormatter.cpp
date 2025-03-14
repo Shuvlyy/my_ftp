@@ -35,9 +35,9 @@ parseFilePermissions
     const __mode_t mode
 )
 {
-    const char rwx[4] = "rwx";
+    constexpr char rwx[4] = "rwx";
     char perms[10] = "---------";
-    const int masks[9] = {
+    constexpr int masks[9] = {
         S_IRUSR, S_IWUSR, S_IXUSR,
         S_IRGRP, S_IWGRP, S_IXGRP,
         S_IROTH, S_IWOTH, S_IXOTH

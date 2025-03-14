@@ -49,7 +49,7 @@ ftp::server::signal::Manager::setupListener
     for (const auto &[signalNumber, handler] : this->_handlers) {
         std::signal(
             signalNumber,
-            [](const int signum) { Manager::dispatchHandler(signum); }
+            [](const int signum) { dispatchHandler(signum); }
         );
     }
 }
