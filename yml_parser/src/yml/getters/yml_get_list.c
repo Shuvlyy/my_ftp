@@ -22,7 +22,7 @@
 static
 char **print_err(const char *err, const char *path)
 {
-    printf("Error: \"%s\": %s\n", path, err);
+    fprintf(stderr,"Error: \"%s\": %s\n", path, err);
     return NULL;
 }
 
