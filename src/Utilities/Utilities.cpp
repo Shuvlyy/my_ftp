@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <sstream>
 #include <filesystem>
-#include <unistd.h>
 
 int
 ftp::Utilities::stringToInt
