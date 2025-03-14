@@ -4,10 +4,6 @@
 
 #include "Common/Responses.hpp"
 
-#include "Exception/IException.hpp"
-
-#include "Utilities/Utilities.hpp"
-
 #include <filesystem>
 #include <format>
 
@@ -38,9 +34,10 @@ ftp::server::command::Mkd::execute
     std::string absolutePath;
 
     try {
-        absolutePath = Utilities::getAbsolutePath(session.getWd(), path);
+        // absolutePath = Utilities::getAbsolutePath(session.getWd(), path);
+        absolutePath = weakly_canonical(fs::path(session.getWd()) / fs::path(commandArguments.at(0)));
     }
-    catch (const exception::IException &) {
+    catch (const fs::filesystem_error &) {
         clientSocket.send(RES_ACTION_NOT_TAKEN); // TODO: More precise message pls
         return;
     }
