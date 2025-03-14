@@ -12,6 +12,7 @@
 
     #define FILE_NOT_FOUND "File not found."
     #define YML_CREATION_FAIL "YML creation failed."
+    #define YML_NOT_INIT "YML not initialized."
     #define YML_PARSING_FAIL "YML parsing failed."
     #define YML_LINE_PARSING_FAIL "YML line parsing failed."
     #define YML_WRONG_SYNTAX "YML line wrong syntax."

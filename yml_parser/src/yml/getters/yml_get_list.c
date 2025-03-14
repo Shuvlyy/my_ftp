@@ -28,6 +28,8 @@ char **print_err(const char *err, const char *path)
 
 /**
  * List getter from node path.
+ * TODO: Check yml_find_node_from_path return value before
+ *       calling TAILQ_FIRST or some!!
  *
  * @param   yml     YML instance
  * @param   path    Node path

@@ -68,10 +68,13 @@ yml_node_t *get_node_by_name_node(
  */
 yml_node_t *yml_find_node_from_path(yml_t *yml, const char *search)
 {
-    char **split = sh_str_split((char *) search, ".", false);
+    char **split = NULL;
     size_t split_len = 0;
     struct yml_node_s *needle = NULL;
 
+    if (yml == NULL)
+        return sh_put_nerr(YML_NOT_INIT);
+    split = sh_str_split((char *) search, ".", false);
     if (split == NULL)
         return sh_put_nerr(MALLOC_FAIL);
     split_len = sh_array_len((void **) split);
