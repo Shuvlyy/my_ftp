@@ -37,11 +37,12 @@ namespace ftp
 
         // void setDashboardInstance(Dashboard *dashboard);
 
+        [[nodiscard]] yml_t *getConfig() const;
         [[nodiscard]] Logger &getLogger();
         [[nodiscard]] server::command::Manager &getCommandManager();
         [[nodiscard]] server::session::Manager &getSessionManager();
         [[nodiscard]] server::Socket &getServerSocket();
-        [[nodiscard]] yml_t *getConfig() const;
+        [[nodiscard]] int getMaxClients() const;
         [[nodiscard]] bool isRunning() const;
 
     private:
@@ -51,6 +52,7 @@ namespace ftp
         server::command::Manager _commandManager;
         server::session::Manager _sessionManager;
         server::signal::Manager _signalManager;
+        int _maxClients;
         bool _isRunning;
         server::Socket _serverSocket;
         std::vector<pollfd> _pollFds;

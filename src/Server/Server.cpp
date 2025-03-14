@@ -29,9 +29,13 @@ ftp::Server::Server
         throw exception::CouldNotOpenConfig();
     }
 
-    const int maxClients = yml_get_int(this->_config, "settings.maxClients");
+    this->_maxClients = yml_get_int(this->_config, "settings.maxClients");
 
-    this->_serverSocket.startListening(maxClients > 0 ? maxClients : DEFAULT_MAX_CLIENTS);
+    if (this->_maxClients <= 0) {
+        this->_maxClients = DEFAULT_MAX_CLIENTS;
+    }
+
+    this->_serverSocket.startListening(this->_maxClients);
 
     this->_pollFds.push_back({
         .fd = this->_serverSocket.getFd(),
@@ -115,6 +119,14 @@ ftp::Server::stop
 //     this->_dashboard = dashboard;
 // }
 
+yml_t *
+ftp::Server::getConfig
+()
+    const
+{
+    return this->_config;
+}
+
 ftp::Logger &
 ftp::Server::getLogger
 ()
@@ -143,12 +155,12 @@ ftp::Server::getServerSocket
     return this->_serverSocket;
 }
 
-yml_t *
-ftp::Server::getConfig
+int
+ftp::Server::getMaxClients
 ()
     const
 {
-    return this->_config;
+    return this->_maxClients;
 }
 
 bool
