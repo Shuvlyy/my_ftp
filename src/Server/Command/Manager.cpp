@@ -19,6 +19,8 @@
 #include "Server/Command/Commands/Type.hpp"
 #include "Server/Command/Commands/Stor.hpp"
 #include "Server/Command/Commands/Retr.hpp"
+#include "Server/Command/Commands/Mkd.hpp"
+#include "Server/Command/Commands/Rmd.hpp"
 
 #include "Exception/Exceptions/UnknownCommand.hpp"
 #include "Exception/Exceptions/InvalidCommandUsage.hpp"
@@ -139,6 +141,8 @@ ftp::server::command::Manager::registerCommands
     this->registerCommand(std::make_unique<Type>());
     this->registerCommand(std::make_unique<Stor>());
     this->registerCommand(std::make_unique<Retr>());
+    this->registerCommand(std::make_unique<Mkd>());
+    this->registerCommand(std::make_unique<Rmd>());
 }
 
 void

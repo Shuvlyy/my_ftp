@@ -49,7 +49,9 @@ SRC += src/Server/Command/Manager.cpp \
 	src/Server/Command/Commands/List.cpp \
 	src/Server/Command/Commands/Type.cpp \
 	src/Server/Command/Commands/Stor.cpp \
-	src/Server/Command/Commands/Retr.cpp
+	src/Server/Command/Commands/Retr.cpp \
+	src/Server/Command/Commands/Mkd.cpp \
+	src/Server/Command/Commands/Rmd.cpp
 
 #SRC += Dashboard/Dashboard.cpp \
 #	Dashboard/View/AView.cpp \
