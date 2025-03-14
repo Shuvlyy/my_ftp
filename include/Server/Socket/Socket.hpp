@@ -1,8 +1,9 @@
 #pragma once
 
-#define PROTOCOL_ANY    0
-#define BUFFER_SIZE     1024
-#define MAX_CLIENTS     192
+#define PROTOCOL_ANY        0
+#define BUFFER_SIZE         1024
+#define DEFAULT_MAX_CLIENTS 192
+#define CRLF                "\r\n"
 
 #include <string>
 #include <netinet/in.h>
@@ -39,7 +40,7 @@ namespace ftp::server
         /**
          * Reads from the file descriptor and returns its content.
          */
-        [[nodiscard]] std::string receive() const;
+        [[nodiscard]] std::string receive();
 
         /**
          * Reads from the file descriptor and returns its content.
@@ -60,11 +61,12 @@ namespace ftp::server
 
         [[nodiscard]] sockaddr_in &getAddress();
 
-        void startListening();
+        void startListening(int maxClients);
 
     protected:
         int _fd;
         sockaddr_in _address;
+        std::string _bufferCache;
     };
 
 }

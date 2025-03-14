@@ -54,7 +54,7 @@ ftp::server::Socket::send
         return;
     }
 
-    const std::string dataToSend(data + "\r\n");
+    const std::string dataToSend(data + CRLF);
 
     const ssize_t bytesWritten = write(
         this->_fd,
@@ -70,10 +70,7 @@ ftp::server::Socket::send
 std::string
 ftp::server::Socket::receive
 ()
-    const
 {
-    std::string result;
-
     while (true) {
         if (this->_fd == -1) {
             return "";
@@ -87,22 +84,21 @@ ftp::server::Socket::receive
         }
 
         if (bytesRead == 0) {
-            throw exception::ClientDisconnected(this->getFd());
+            throw exception::ClientDisconnected(this->_fd);
         }
 
         buffer[bytesRead] = '\0';
-        result.append(buffer, bytesRead);
 
-        if (result.size() >= 2 && result.ends_with("\r\n")) {
-            break;
+        this->_bufferCache.append(buffer, bytesRead);
+
+        const size_t crlfPos = this->_bufferCache.find(CRLF);
+
+        if (crlfPos != std::string::npos) {
+            std::string result = this->_bufferCache.substr(0, crlfPos);
+            this->_bufferCache = this->_bufferCache.substr(crlfPos + 2); // Keeping in cache what's after CRLF.
+            return result;
         }
     }
-
-    /* Removing <CRLF> (\r\n, last two characters) */
-    result.pop_back();
-    result.pop_back();
-
-    return result;
 }
 
 std::string
@@ -151,7 +147,9 @@ ftp::server::Socket::getFd
 
 void
 ftp::server::Socket::startListening
-()
+(
+    const int maxClients
+)
 {
     if (bind(
         this->_fd,
@@ -162,7 +160,7 @@ ftp::server::Socket::startListening
         throw exception::StandardFunctionFail("bind");
     }
 
-    if (listen(this->_fd, MAX_CLIENTS) < 0) {
+    if (listen(this->_fd, maxClients) < 0) {
         close(this->_fd);
         throw exception::StandardFunctionFail("listen");
     }
