@@ -21,6 +21,7 @@
 yml_t *yml_create_from_file(const char *filepath)
 {
     char *file_content;
+    yml_t *yml = NULL;
 
     if (filepath == NULL || filepath[0] == '\0') {
         return NULL;
@@ -28,5 +29,7 @@ yml_t *yml_create_from_file(const char *filepath)
     file_content = sh_read_file((char *) filepath);
     if (file_content == NULL)
         return sh_put_nerr(MALLOC_FAIL);
-    return yml_create_from_string(file_content);
+    yml = yml_create_from_string(file_content);
+    yml->filepath = filepath;
+    return yml;
 }

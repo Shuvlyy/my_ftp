@@ -38,6 +38,7 @@ typedef struct yml_node_s {
 } yml_node_t;
 
 typedef struct {
+    const char *filepath;
     char *raw_content;
     TAILQ_HEAD(yml_list_s, yml_node_s) nodes;
 } yml_t;
