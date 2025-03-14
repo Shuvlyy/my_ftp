@@ -29,7 +29,9 @@ ftp::Server::Server
         throw exception::CouldNotOpenConfig();
     }
 
-    this->_serverSocket.startListening();
+    const int maxClients = yml_get_int(this->_config, "settings.maxClients");
+
+    this->_serverSocket.startListening(maxClients > 0 ? maxClients : DEFAULT_MAX_CLIENTS);
 
     this->_pollFds.push_back({
         .fd = this->_serverSocket.getFd(),

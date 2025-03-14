@@ -1,6 +1,6 @@
 #pragma once
 
-#define fourchette  fork
+#define fourchette  fork    // haha funi
 
 #include "Server/Socket/Socket.hpp"
 
