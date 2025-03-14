@@ -21,7 +21,7 @@
 static
 int print_err(const char *err, const char *path)
 {
-    fprintf(stderr,"Error: \"%s\": %s\n", path, err);
+    fprintf(stderr, "Error: \"%s\": %s\n", path, err);
     return 0;
 }
 
