@@ -13,6 +13,7 @@
 #define RES_USER_LOGGED_IN "230 User logged in, proceed."
 #define RES_FILE_ACTION_REQ "250 Requested file action okay, completed."
 #define RES_PWD "257 \"{}\""
+#define RES_PATH_CREATED "257 \"{}\" created."
 
 // 3xx - Positive Intermediate Replies
 #define RES_USER_OK_NEED_PASSWORD "331 User name okay, need password."
