@@ -32,7 +32,15 @@ ftp::server::command::Dele::execute
 
     const std::string &path = commandArguments.at(0);
 
-    const std::string absolutePath = Utilities::getAbsolutePath(session.getWd(), path);
+    std::string absolutePath;
+
+    try {
+        absolutePath = Utilities::getAbsolutePath(session.getWd(), path);
+    }
+    catch (const std::exception &) {
+        clientSocket.send(RES_ACTION_NOT_TAKEN); // TODO: More precise message pls
+        return;
+    }
 
     if (!absolutePath.starts_with(session.getUser()->getDefaultWd())) {
         clientSocket.send(RES_ACTION_NOT_TAKEN); // TODO: More precise message pls
@@ -45,7 +53,7 @@ ftp::server::command::Dele::execute
     }
 
     try {
-        fs::remove(commandArguments.at(0));
+        fs::remove(absolutePath);
         clientSocket.send(RES_FILE_ACTION_REQ);
     }
     catch (const std::filesystem::filesystem_error &exception) {
