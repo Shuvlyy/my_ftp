@@ -1,5 +1,7 @@
 #include "Server/Command/Manager.hpp"
 
+#include "Common/Responses.hpp"
+
 #include "Server/Server.hpp"
 
 #include "Server/Session/Session.hpp"
@@ -106,6 +108,7 @@ ftp::server::command::Manager::executeCommand
     }
     catch (exception::IException &exception) {
         std::cerr << exception;
+        session.getControlSocket().send(RES_UNKNOWN);
     }
 }
 
