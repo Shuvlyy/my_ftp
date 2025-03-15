@@ -23,6 +23,16 @@ ftp::server::command::List::isUsageValid
     return commandArguments.size() <= 1;
 }
 
+static void
+cleanExit
+(
+    ftp::server::Session &session
+)
+{
+    session.getDataSocket().closeSocket();
+    exit(0);
+}
+
 void
 ftp::server::command::List::execute
 (
@@ -62,19 +72,23 @@ ftp::server::command::List::execute
     }
     catch (const exception::PathIsNotDir &) {
         clientSocket.send(RES_NOT_DIR);
+        cleanExit(session);
         return;
     }
     catch (const exception::WdOutOfScope &) {
         clientSocket.send(RES_ACTION_NOT_TAKEN);
+        cleanExit(session);
         return;
     }
     catch (const exception::FileNotFound &) {
         clientSocket.send(RES_ACTION_NOT_TAKEN); // FIXME: Maybe more precise error message?
+        cleanExit(session);
         return;
     }
     catch (const exception::IException &exception) {
         clientSocket.send(RES_UNKNOWN);
         std::cerr << exception;
+        cleanExit(session);
         return;
     }
 
@@ -89,8 +103,7 @@ ftp::server::command::List::execute
     }
 
     /* Going back to where the client was */
-    session.getDataSocket().closeSocket();
     session.cwd(oldPath);
 
-    exit(0);
+    cleanExit(session);
 }
