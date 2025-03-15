@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 namespace ftp::user
 {
@@ -17,6 +18,7 @@ namespace ftp::user
 
         void registerUser(std::unique_ptr<User> user);
 
+        std::vector<User *> getRegisteredUsers() const;
         User *getUser(const std::string &username) const;
 
     private:

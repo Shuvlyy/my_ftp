@@ -11,6 +11,19 @@ ftp::user::Manager::Manager
     this->registerDefaultUsers(config, anonPath);
 }
 
+std::vector<ftp::User *>
+ftp::user::Manager::getRegisteredUsers
+()
+    const
+{
+    std::vector<User *> users;
+
+    for (auto &[_, user] : this->_users) {
+        users.push_back(user.get());
+    }
+    return users;
+}
+
 ftp::User *
 ftp::user::Manager::getUser
 (
