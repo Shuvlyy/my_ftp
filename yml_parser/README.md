@@ -1,6 +1,6 @@
 # YML Parser
 
-Basic YAML parser written in C.
+Basic YML parser written in C.
 
 ## Usage
 
@@ -10,7 +10,7 @@ Basic YAML parser written in C.
 ### Creation
 
 ```c
-char filepath[] = "file.yml";
+char filepath[] = "./file.yml";
 yml_t *yml = yml_create_from_file(filepath);
 
 /* Or... */
@@ -42,7 +42,7 @@ yml *yml = ...; // Initialize your YML here
 int birth_year = yml_get_int(yml, "birth.year"); // 2006
 float gpa = yml_get_float(yml, "gpa"); // 3.20
 char *name = yml_get_str(yml, "name"); // "Lysandre"
-char *name = yml_get_str(yml, "hasCramptes"); // false
+bool hasCramptes = yml_get_bool(yml, "hasCramptes"); // false
 
 /* Error demonstration */
 int month_name = yml_get_int(yml, "birth.month.name"); // "Error: "birth.month.name": Node type isn't valid"
@@ -68,7 +68,7 @@ yml *yml = ...; // Initialize your YML here
 
 yml_set_int(yml, "age", 19); // Soon!!
 yml_set_float(yml, "gpa", 4.0f);
-yml_set_str(yml, "name", "Jolina");
+yml_set_str(yml, "name", "Jolina"); // 😔
 yml_set_bool(yml, "hasCramptes", true); // 😊
 ```
 
